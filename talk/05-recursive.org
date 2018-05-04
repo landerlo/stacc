@@ -1,0 +1,63 @@
+* Inductive types
+    
+ * The most famous inductive types Naturals, in the Peano encoding
+  - Let's consider zero is the starting point, let's use the empty set {}
+  - We construct the successors of the previous number.
+  - One as the successor of 0. 
+   zero = {} 
+   one = { pred = zero }
+   two = { pred = one }
+   two = { pred = { pred = {} } } 
+
+# ///////////// Side by side ??? /////////////////////
+ * All the data structures we can create are finite
+
+
+ * ... But where are the types? We haven't created any abstraction about the Naturals.
+  We can just construct instances of numbers.
+
+    
+   We want x e Nat
+   Nat = ???
+
+   Induct one step:
+   Nat = {} | Succ
+
+   Succ = ???
+
+   We miss the ability to refer to the recursion. i.e.
+
+=========================================== 
+ * Enter references
+   
+    Being able to reference structures in the tree gives us cycle, loops, recursion.
+    
+    Nat = {} | Succ
+    Succ = { pred: Nat }
+
+  * /IMG Graph of NAT with the loops
+   
+  * Because we are only in the realm of data this is safe. Not general recursion   
+  
+   Gives us a solid foundation.
+
+  # codata?
+
+=============================================
+
+* Succ: Nat -> Nat 
+    * Is too powerful for the induction step Succ { pred: Nat }
+    
+    * f: Nat -> Nat can be adding two or not terminate in your lifetime your if f = 'the Nth Prime'
+
+* In Stacc Succ { pred: Succ } can be seen as Nat -> Nat if necessary but it is explicitly typed as itself: 
+    { pred: Nat }
+    We create something depending on a Nat.
+
+    * Mayb we need a signature for induction steps. Ideas welcome
+
+===============================================
+
+
+
+

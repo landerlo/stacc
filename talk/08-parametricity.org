@@ -1,0 +1,43 @@
+* Parametricity
+
+
+Same as we create dependencies on other properties. If the other property is a Set, we create a dependency of being a member of it
+
+{
+
+T e Set
+
+a e T
+
+}
+
+We've encoded parametricity
+
+e.g. identity
+
+id = { 
+
+    T e Set
+
+    x e T 
+    
+     => x
+}
+
+* As expected we apply the set property same as any other value
+
+idNat = id u { T = Nat }
+
+====
+Bonus material:
+* Parameterised on the type is just a constraint
+
+There is nothing special about the constraint that it needs to belong to that type.
+Equally we could establish other properties.
+
+smallerThan3 = {
+
+x e ( < 3) 
+
+}
+

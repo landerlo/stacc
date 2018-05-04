@@ -1,2 +1,33 @@
+target
+.idea
 *.class
 *.log
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+metastore_db
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet:$
+*.iml
+*.ipr
+*.iws
+out
+shippable
+
+metadata.avro
+
+**/.directory
+
+.DS_Store
+.ensime
+

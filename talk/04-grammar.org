@@ -1,0 +1,29 @@
+* Grammar
+
+## Mayba have side by side panels to show examples alongside grammar, but without distracting about alignment
+VAR=$id    --  a
+REF=$path  -- a.b.y
+
+POV=   VAR PRED         -- a = {}
+PRED=  e PSET              a = b
+      |eq COND PSET        b e A
+                           |{}, b  = {} 
+                           |a   b  = {}
+
+COND= 'always' | PSET
+
+
+PSET= {}
+     |POV* -
+     |PSET U PSET   -- {} u {}
+     |REF
+
+
+* Examples
+## Show nested sets and the references to subelements in the tree.
+
+## At some point make parallelism with "well formed trees" / or image by V Voedich. Probably this should come earlier?
+
+## Finish with remark that no interesting data can be represented with the deterministic approach. We need inductive types
+
+

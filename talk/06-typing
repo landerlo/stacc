@@ -1,0 +1,50 @@
+* TYPING
+
+# After seeing inductive types we'll explore the typing judgement
+
+* A correct program in Stacc is a set of predicates that: 
+    ** don't lead to absurdity,  i.e. are true
+    ** They are internally consistent
+  
+* Rather than having a true of false in Stacc we have the ability to bring absurdity, bottom.
+    { a e {} } member of the empty set, this is impossible.
+
+   There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
+
+   But we can create our own:
+
+* Let's create < being Nat
+
+    < = { a: Nat,
+          b: Nat,
+          result = | {} e {},                        { b = {} ]
+                   | {} e U,                         { a = {}, b /= {}  }
+                   | < u { a = a.pred, b = b.pred }, { b /= {}, a /= {} }
+    }
+
+    In the second clause we introduce Absurdity. That's way all the paths in the disjunction must be disjoint, i.e. no overlap.
+
+    This way we can create a refinement type  < 2
+
+      smallerThan2 = < u { b = { pred = { pred = {} }} }
+                #  = _ < 2 
+    We partially apply the smaller than to 2
+
+* We can use that:
+    fact = {
+        a: Nat # This is redundant once we refine
+        a: < u { b = 20}
+        ...
+    }
+
+    
+    { y : Nat
+      f = fact u { a = y } 
+      #!!! will fail. No evidence that f is smaller than that.
+
+      # We need
+      f = |  
+    
+
+    
+* We 

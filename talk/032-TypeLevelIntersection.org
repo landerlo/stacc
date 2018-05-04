@@ -1,0 +1,20 @@
+* Intersection / conjunction
+
+** The way to encode adhoc properties on elements
+   e.g. newtype in haskell
+
+   newtype propA 
+   newttpe propB
+
+** you would probably create a new newtype AandB
+   You cannot combine the with a fundamental connective like And or intersection.
+
+================================
+
+* Uncle Bob: where is your composability now?    
+
+===============================
+
+* We are missing composability at the type level
+
+==============================

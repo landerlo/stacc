@@ -1,18 +1,18 @@
-
-
-<---------------------------------------------------------->
-<--- 01-whoami.org -->
+<!--- ----------------------------------------------------- -->
+<!---  01-whoami.org   -->
 
 
 * WHO AM I
 
     - caveat emptor
-
+    - All my academic publications have been in 140 char format
+    - Low in the retweet index for the community <!-- comment?  --> 
+???
+    Main motivation for my interest in PL design are the frustrations from working with multiple mainstream languages.
+    WIth a low
 ---
-
-
-<---------------------------------------------------------->
-<--- 02-stacc-is.org -->
+<!--- ----------------------------------------------------- -->
+<!---  02-stacc-is.org  -->
 
 
 
@@ -48,18 +48,33 @@
 * Constructive
     ...
 
+???
+TODO: Read COC
 
-<---------------------------------------------------------->
-<--- 03-Motivation.org -->
+<!--- ----------------------------------------------------- -->
+<!---  03-Motivation.org  -->
+
+# Motivation
+    * Start from a richer metatheory
+    
+    * Decidability
+
+    * Hierarchical 
+???
+
+These points can be shown with the photos of sets in Math and
 
 
-* Motivation
-    ** Frustrations from the mainstream PL
-&&& Push up the constraint
+---
 
+# Decidability vs formally verified
 
-&&& complexity gets trimmed the more tight the function domain is. 
+   * Add-hoc constrains
+    - Push up the constraint
+    - Complexity gets trimmed the more tight the function domain is. 
 
+   * Type level enforcement of business invariants
+???
 Functions returning filtered results, Maybes or validation errors have the complexity of that optionality handling inside the function
 and then of handling the result that needs to encode the required invariants.
 
@@ -69,8 +84,10 @@ through parametricity.
 Pushing this further we need to demand that other invariants not expressible at the "type level" are also enforced through decidability.
 
 very important for business invariants
+---
 * Intersection / conjunction
 
+* "Fast and loose proving is morally correct"
 ** The way to encode adhoc properties on elements
    e.g. newtype in haskell
 
@@ -91,8 +108,8 @@ very important for business invariants
 ==============================
 
 
-<---------------------------------------------------------->
-<--- 04-grammar.org -->
+<!--- ----------------------------------------------------- -->
+<!---  04-grammar.org  -->
 
 
 * Grammar
@@ -126,8 +143,8 @@ PSET= {}
 
 
 
-<---------------------------------------------------------->
-<--- 05-recursive.org -->
+<!--- ----------------------------------------------------- -->
+<!---  05-recursive.org  -->
 
 
 * Inductive types
@@ -195,8 +212,8 @@ PSET= {}
 
 
 
-<---------------------------------------------------------->
-<--- 06-typing -->
+<!--- ----------------------------------------------------- -->
+<!---  06-typing  -->
 
 
 * TYPING
@@ -251,8 +268,8 @@ PSET= {}
 * We 
 
 
-<---------------------------------------------------------->
-<--- 07-functions.org -->
+<!--- ----------------------------------------------------- -->
+<!---  07-functions.org  -->
 
 
 * FUNCTIONS
@@ -283,8 +300,8 @@ Relation with the addition of those
 # show 1 + 2 
 
 
-<---------------------------------------------------------->
-<--- 08-parametricity.org -->
+<!--- ----------------------------------------------------- -->
+<!---  08-parametricity.org  -->
 
 
 * Parametricity
@@ -332,8 +349,8 @@ x e ( < 3)
 
 
 
-<---------------------------------------------------------->
-<--- 09-dinamyctiping.org -->
+<!--- ----------------------------------------------------- -->
+<!---  09-dinamyctiping.org  -->
 
 
 * Dinamyc typing

@@ -239,7 +239,9 @@ PSET= {}
 * Rather than having a true of false in Stacc we have the ability to bring absurdity, bottom.
     { a e {} } member of the empty set, this is impossible.
 
-   There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
+---
+
+   :::: There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
 
    But we can create our own:
 
@@ -247,12 +249,12 @@ PSET= {}
 
     < = { a: Nat,
           b: Nat,
-          result = | {} e {},                        { b = {} ]
-                   | {} e U,                         { a = {}, b /= {}  }
-                   | < u { a = a.pred, b = b.pred }, { b /= {}, a /= {} }
+          result = | {},               a  = {}, b /= {}  // (1) Indeed a < b the returned value is indiferent.
+                   | {} e {},          b  = {}           // Absurdity a < b.
+                   | a.pred < b.pred,  b /= {}, a /= {}  // We don't know yet we retest with the predecessirs
     }
 
-    In the second clause we introduce Absurdity. That's way all the paths in the disjunction must be disjoint, i.e. no overlap.
+    - In the first clause we introduce Absurdity. That's way all the paths in the disjunction must be disjoint, i.e. no overlap.
 
     This way we can create a refinement type  < 2
 

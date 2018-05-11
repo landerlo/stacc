@@ -11,6 +11,5 @@ case class FlatMap[F[_], A, B](a: Reify[F, A], f: A => F[B]) extends Reify[F, B]
 object ID {
   type ID[A] = A
 
-  def interpret[A](f: Reify[F.  ])
 
 }

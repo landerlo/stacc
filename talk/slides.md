@@ -50,7 +50,9 @@
 ---
 
 * Constructive
-    ...
+   
+    - In order to have a witness or a proof we need to construct it
+    - In Stacc any construction that doesn't result in absurdity, aka Bottom, is considered a success.
 
 ???
 
@@ -157,6 +159,28 @@ PSET= {}
 
 ---
 
+Forall v, p in pset p e U
+
+x e PWSet Y iff Forall v in VARS(Y), 
+            v e VARS(X) AND Unified(x.v) PROP_SUBSET Unified(Y.v)
+
+PROPS_SUBSET pa, pb = (pa, pb) match {
+    case e A, e B:  A subset B
+    case e A, e B:  A subset B
+
+
+??? 
+Introduce other rules
+
+---
+
+
+
+--- 
+
+???
+
+Well formed trees?
 <!--- ----------------------------------------------------- -->
 <!---  05-recursive.org  -->
 
@@ -239,7 +263,9 @@ PSET= {}
 * Rather than having a true of false in Stacc we have the ability to bring absurdity, bottom.
     { a e {} } member of the empty set, this is impossible.
 
-   There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
+---
+
+   :::: There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
 
    But we can create our own:
 
@@ -247,18 +273,22 @@ PSET= {}
 
     < = { a: Nat,
           b: Nat,
-          result = | {} e {},                        { b = {} ]
-                   | {} e U,                         { a = {}, b /= {}  }
-                   | < u { a = a.pred, b = b.pred }, { b /= {}, a /= {} }
+          result = | {},              _if_  a  = {}, b /= {}  // (1) Indeed a < b the returned value is indiferent.
+                   | {} e {},         _if_  b  = {}           // Absurdity a < b.
+                   | a.pred < b.pred, _if_  b /= {}, a /= {}  // We don't know yet we retest with the predecessirs
     }
 
-    In the second clause we introduce Absurdity. That's way all the paths in the disjunction must be disjoint, i.e. no overlap.
+    - In the first clause we introduce Absurdity.
 
-    This way we can create a refinement type  < 2
+* All the paths in the disjunction must be disjoint, i.e. no overlap.
 
-      smallerThan2 = < u { b = { pred = { pred = {} }} }
-                #  = _ < 2 
-    We partially apply the smaller than to 2
+--- 
+
+* This way we can create a refinement type  < 2
+
+    smallerThan2 = < u { b = { pred = { pred = {} }} }
+             //  = _ < 2 
+    We partially apply < with 2 on the upper bound
 
 * We can use that:
     fact = {
@@ -270,10 +300,10 @@ PSET= {}
     
     { y : Nat
       f = fact u { a = y } 
-      #!!! will fail. No evidence that f is smaller than that.
+      /// !!! will fail. No evidence that f is smaller than that.
 
-      # We need
-      f = |  
+      # We need to provide the witness
+      f = | fact u { a = y },  if a < u { b = 20 }   
     
 
     
@@ -293,7 +323,7 @@ Product of two nats
 
 # Explain the typing here? Probably better before. After the recursive type.
 
-Relation with the addition of those
+Relation with the addition
 
 { a: Nat
   b: Nat
@@ -305,11 +335,13 @@ Relation with the addition of those
            | self u { a = a, b = b },   
 }
 
-# Show a nice syntax? Should the condition object require to 
+---
 
-# /IMG of the relation between numbers sets
+???
 
-# show 1 + 2 
+/IMG of the relation between numbers sets
+
+ show 1 + 2 
 
 
 <!--- ----------------------------------------------------- -->

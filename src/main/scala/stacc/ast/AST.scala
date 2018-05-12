@@ -1,36 +1,25 @@
 package stacc.ast
 
-import Resolve.resolve
+import scalaz.{NonEmptyList => NEL, \/}
 
 import scala.collection.Set
 case class Id(s: String)
 
-trait PSet
+case class Ref(path: Path)
+case class PSet(vs: Set[PropOnVar])
 
-case class Props(ps: Set[PSet]) extends PSet
-object Props {
-  def apply(ps: PSet*): Props = Props(ps.toSet)
-}
-//case class Eq(p: PSet) extends PSet
-case class Ref(path: Path) extends PSet
-case class ConcreteVarPSet(vs: Set[PropOnVar]) extends PSet {
-  def getProp(v: String): Option[PSet] = {
-    val z: Seq[PSet] = vs.toSeq.filter(_.v == v).map(_.propsValue)
-    z match {
-      case Seq()    => None
-      case Seq(p)   => Some(p)
-      case multiple => Some(Props(multiple.toSet))
-    }
-  }
+object PSet {
+   val empty = PSet(Set[PropOnVar]())
+   val ∅ = empty
+
+   def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
 }
 
-object ConcreteVarPSet {
-   val empty = ConcreteVarPSet(Set[PropOnVar]())
+trait Prop
+case class Equals(e: Ref \/ PSet) extends Prop
+case class MemberOf(e: Ref \/ PSet) extends Prop
 
-   def apply(vs: PropOnVar*): ConcreteVarPSet = ConcreteVarPSet(vs.toSet)
-}
-
-case class PropOnVar(v: String, propsValue: PSet)
+case class PropOnVar(v: Var, p: Prop)
 
 object PropOnVar {
 }
@@ -43,21 +32,18 @@ case class Path(segments: List[String]) {
     case Nil => throw new IllegalStateException("NEL")
   }
 }
+
+
 object Path {
    def apply(path: String): Path = Path(path.split("\\.").toList)
 }
 
 //case class Union(a: Either[Ref, VarPSet], b: Either[Ref, VarPSet]) extends PSet
 
-case class Absurdity() extends PSet
+case class Absurdity()
 
 case class Var(name: String)
 
-case class Universe(root: ConcreteVarPSet)
-
-trait VarPropSet[A] {
-
-  def resolveProps(ctx: Universe, a: A): Option[ConcreteVarPSet]
-}
+case class Universe(root: PSet)
 
 

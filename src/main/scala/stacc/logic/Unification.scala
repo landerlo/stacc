@@ -1,6 +1,6 @@
 package stacc.logic
 
-import stacc.ast.{PSet, ConcreteVarPSet}
+import stacc.ast.PSet
 
 object Unification {
 

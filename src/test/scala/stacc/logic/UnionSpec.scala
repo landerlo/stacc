@@ -2,13 +2,13 @@ package stacc.logic
 
 import org.scalatest.FreeSpec
 import stacc.ast.AstSyntax._
-import stacc.ast.ConcreteVarPSet
-import stacc.ast.ConcreteVarPSet.empty
+import stacc.ast.PSet
+import stacc.ast.PSet.empty
 
 class UnionSpec extends FreeSpec {
 
-  val A = ConcreteVarPSet('a := empty)
-  val B = ConcreteVarPSet('b := empty)
+  val A = PSet('a := empty)
+  val B = PSet('b := empty)
 
   "Simple unions" - {
     "Set of properties union" in pending

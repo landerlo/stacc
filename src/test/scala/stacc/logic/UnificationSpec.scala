@@ -5,15 +5,17 @@ import stacc.ast.PSet
 import stacc.ast.PSet.empty
 import stacc.ast.AstSyntax._
 import Unification.unify
+import scalaz.{NonEmptyList => NEL}
+
 class UnificationSpec extends FreeSpec {
 
-  val A = PSet('a := empty)
-  val B = PSet('b := empty)
+  val A =  PSet('a := empty)
+  val B =  PSet('b := empty)
+  val C =  PSet('c := empty)
 
-  "Simple unions" - {
-    "Empty unifies to empty" in assert { unify(Seq()) === Seq() }
-    "orthogonal sets unchanged" in {
-      unify(Seq(A,B)) === Seq(A, B)
+  "Orthogonal set membership" - {
+    "membership of orthogonal sets results in union" in {
+      unify(NEL.nels(ee(A), ee(B))) === Top(ee(PSet('a := empty, 'b := empty, 'c := empty)))
     }
 
   }

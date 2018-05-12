@@ -1,5 +1,5 @@
 package stacc.ast
-import scalaz.{-\/, NonEmptyList, \/-}
+import scalaz.{-\/, NonEmptyList, \/, \/-}
 import stacc.ast._
 
 object AstSyntax {
@@ -11,6 +11,7 @@ object AstSyntax {
   def ee(ps: PSet):  MemberOf = MemberOf(\/-(ps))
   def ee(s: Symbol): MemberOf = MemberOf(-\/(Ref(Path(s.name))))
   def ee(ref: Ref):  MemberOf = MemberOf(-\/(ref))
+  def ee(psOrRef: Ref \/ PSet):  MemberOf = MemberOf(psOrRef)
 
   implicit def idToVar(id: Symbol): Var = Var(id.name)
   implicit def idToRef(id: Symbol): Ref = Ref(Path(id.name))

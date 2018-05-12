@@ -4,6 +4,10 @@ import org.scalatest.FreeSpec
 import stacc.ast._
 import stacc.ast.PSet.empty
 import stacc.ast.AstSyntax._
+import stacc.logic.Top
+import Resolve.resolve
+import scalaz.{\/-, NonEmptyList => NEL}
+import AstSyntax._
 
 class NamingSpec extends FreeSpec {
 
@@ -18,13 +22,8 @@ class NamingSpec extends FreeSpec {
 
       val B = 'B := Ref(Path("A.a"))
 
-     //val resolvedB = 'B :=
 
-    //  val resolved = Resolve.resolve(Path("A.a"), PSet(A, B))
-
- //     assert {
-  //      resolved.isDefined
-   //   }
+      assert { resolve(Path("A.a"))(PSet(A, B))(\/-(PSet(A, B))) === Top(NEL(:=(empty))) }
 
     }
     "Successful reference out of order" in {

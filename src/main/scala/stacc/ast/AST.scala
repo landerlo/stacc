@@ -1,7 +1,7 @@
 package stacc.ast
 
-import scalaz.{NonEmptyList => NEL, \/}
-
+import scalaz.{IList, NonEmptyList => NEL, _}
+import Scalaz._
 import scala.collection.Set
 case class Id(s: String)
 
@@ -10,32 +10,37 @@ case class PSet(vs: Set[PropOnVar])
 
 object PSet {
    val empty = PSet(Set[PropOnVar]())
-   val ∅ = empty
-
+   val Ø = empty
    def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
 }
 
-trait Prop
-case class Equals(e: Ref \/ PSet) extends Prop
-case class MemberOf(e: Ref \/ PSet) extends Prop
+trait Prop { def target: Ref \/ PSet }
+case class Equals(target: Ref \/ PSet) extends Prop
+case class MemberOf(target: Ref \/ PSet) extends Prop
 
 case class PropOnVar(v: Var, p: Prop)
 
 object PropOnVar {
 }
 
-case class Path(segments: List[String]) {
-  require(segments.nonEmpty)
+case class Path(segments: NEL[String]) {
+  import scalaz.IList._
+
   def split: (String, Option[Path]) = segments match {
-    case a :: Nil => (a, None)
-    case a :: rem => (a, Some(Path(rem)))
-    case Nil => throw new IllegalStateException("NEL")
+    case NEL(a, INil()) => (a, None)
+    case NEL(a, ICons(b: String, rem: IList[String])) => (a, Some(Path(NEL.nel(b, rem))))
   }
 }
 
 
 object Path {
-   def apply(path: String): Path = Path(path.split("\\.").toList)
+   def apply(path: String): Path = {
+     //Unchecked as split always returns itself at least it will always be a NEL
+     val nel = (path.split("\\.").toList: @unchecked) match {
+       case a :: rest => NEL.nel(a, IList.fromList(rest))
+     }
+     Path(nel)
+   }
 }
 
 //case class Union(a: Either[Ref, VarPSet], b: Either[Ref, VarPSet]) extends PSet

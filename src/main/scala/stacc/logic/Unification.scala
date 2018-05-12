@@ -1,24 +1,19 @@
 package stacc.logic
 
-import stacc.ast.PSet
+import scalaz.{NonEmptyList => NEL}
+import stacc.ast.{AstSyntax, MemberOf, Prop}
+import stacc.ast.AstSyntax._
 
 object Unification {
 
-  trait PSetUnification[A <: PSet] {
-    def unify(a: A): A
+ def unify(ps: NEL[Prop]): Ev[Prop] = ???
+
+ implicit val unificationSemigroup = new Semigroup[Prop] {
+  override def append(a: Prop, b: Prop): Prop =
+   case (MemberOf(psA), MemberOf(psB)) =>
+      for {
+        a <-
+      }
   }
-
- def unify(ps: Seq[PSet]): Seq[PSet] = ps match {
-   case Seq() => Seq()
-   case a => a
-   // case (ConcreteVarPSet(as), ConcreteVarPSet(bs)) => ConcreteVarPSet(as ++ bs)
-    // case _ => ConcreteVarPSet.empty
  }
-
-//   a match {
-//     case PropUnion(us) =>
-//       val unified = us.map(unify)
-//       unified.reduce(u)
-//   }
-// }
 }

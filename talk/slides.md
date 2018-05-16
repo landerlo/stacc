@@ -1,7 +1,6 @@
 <!--- ----------------------------------------------------- -->
 <!---  01-whoami.org   -->
 
-
 * WHO AM I
 
     - caveat emptor
@@ -18,34 +17,37 @@
 <!--- ----------------------------------------------------- -->
 <!---  02-stacc-is.org  -->
 
-
-
-* STACC:
-    ** Set Theoretic
-    ** Algebraic
-    ** Constructive
-    ** Calculus
+* STACC is 
+    * Nobel core calculus for FP languages
+        - Intended as vehicle for researching my FP lang ideas
+      
+    * Unorthodox: not founded on the Lambda calculus
+      - The foundational metatheory is richer than LC
+      - Nevertheless the semantics can be encoded in LC
+    
+    * Aims at encoding advanced dependant FP constructs in a simple and unified way
 
 ---
 
-* STACC is 
-    ** Nobel core language for FP languages
-    ** To form the core of my FP language ideas, within a year. Name TBD 
-    ** Unorthodox in the sense of not using the foundations of the LC
-    ** The foundational metatheory is richer
-        *** Nevertheless the semantics can be encoded in LC
+* STACC:
+    * Set Theoretic
+    * Algebraic
+    * Constructive
+    * Calculus
+
 ---
 
 * Set theoretic
-    ** Related to set theory
-    ** Primary building block is the set of predicates 
-    ** Set semantics, union is the main combinator
+    * Primary building block is the set of predicates 
+    * Set semantics, union is function application
+--
+    * But the _*ST*_ could be just as well Structural
 
 ---
 
 * Algebraic
-    ** LC has application and product
-    ** STACC has application, product and coproduct
+    * LC has application and product
+    * STACC has application, product and coproduct
 
 ---
 
@@ -53,9 +55,17 @@
    
     - In order to have a witness or a proof we need to construct it
     - In Stacc any construction that doesn't result in absurdity, aka Bottom, is considered a success.
+    - Without having created any types, bottom can be summoned with {} e {}
+
+
+      fistTen = x e Nat
+                => | {},      if x  = 1  
+                   | {} e {}, if x /= 1
 
 ???
 
+
+    
 TODO: Read COC
 
 <!--- ----------------------------------------------------- -->
@@ -99,15 +109,14 @@ very important for business invariants
 * Intersection / conjunction
 
 * "Fast and loose proving is morally correct"
-** The way to encode adhoc properties on elements
-   e.g. newtype in haskell
+    * The way to encode adhoc properties on elements
+        e.g. newtype in haskell
 
-   newtype propA 
-   newttpe propB
+        newtype propA 
+        newttpe propB
 
-** you would probably create a new newtype AandB
-   You cannot combine the with a fundamental connective like And or intersection.
-
+* They cannot combine the with a fundamental connective like And or intersection.
+    - It would require newtype `propA_and_propB`
 ---
 
 * Uncle Bob: where is your composability now?    
@@ -158,7 +167,7 @@ PSET= {}
   Finish with remark that no interesting data can be represented with the deterministic approach. We need inductive types
 
 ---
-
+```
 Forall v, p in pset p e U
 
 x e PWSet Y iff Forall v in VARS(Y), 
@@ -167,7 +176,7 @@ x e PWSet Y iff Forall v in VARS(Y),
 PROPS_SUBSET pa, pb = (pa, pb) match {
     case e A, e B:  A subset B
     case e A, e B:  A subset B
-
+```
 
 ??? 
 Introduce other rules
@@ -257,25 +266,25 @@ Well formed trees?
 # After seeing inductive types we'll explore the typing judgement
 
 * A correct program in Stacc is a set of predicates that: 
-    ** don't lead to absurdity,  i.e. are true
-    ** They are internally consistent
+    * don't lead to absurdity,  i.e. are true
+    * They are internally consistent
   
 * Rather than having a true of false in Stacc we have the ability to bring absurdity, bottom.
     { a e {} } member of the empty set, this is impossible.
 
 ---
 
-   :::: There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
+*  There are builtins for the canonical equality that will bring absurdity, i.e. compilation error
 
    But we can create our own:
 
-* Let's create < being Nat
+* Let's create smaller than *<*  being Nat
 
     < = { a: Nat,
           b: Nat,
           result = | {},              _if_  a  = {}, b /= {}  // (1) Indeed a < b the returned value is indiferent.
                    | {} e {},         _if_  b  = {}           // Absurdity a < b.
-                   | a.pred < b.pred, _if_  b /= {}, a /= {}  // We don't know yet we retest with the predecessirs
+                   | a.pred < b.pred, _if_  b /= {}, a /= {}  // We don't know yet we retest with the predecessors
     }
 
     - In the first clause we introduce Absurdity.
@@ -329,10 +338,13 @@ Relation with the addition
   b: Nat
 
   result: Nat
-  result = | {},                        a = {}, b = {}
-           | b,                         a = {}
-           | a,                         b = {}
-           | self u { a = a, b = b },   
+  result = | {},     if a = {}, b = {}
+           | b,      if a = {}
+           | a,      if b = {}
+           | self u { 
+                 a = Succ u { pred = a}
+                 b = b.pred 
+             }       if a /= {} & b /= {}
 }
 
 ---
@@ -381,10 +393,13 @@ id = {
 }
 ```
 
+---
+
 * As expected we apply the set property same as any other value
 
 idNat = id u { T = Nat }
 
+???
 
 Bonus material:
 

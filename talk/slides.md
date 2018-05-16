@@ -6,13 +6,15 @@ class: middle
 <!---  01-whoami.org   -->
 
 # WHO AM I
+    
+    ...
 
-    - caveat emptor
+    * caveat emptor
     - All my academic publications have been in 140 char format
-    - Low in the retweet index for the community <!-- comment?  --> 
+    - Low in the retweet index for the community 
 
 ???
-
+/TODO:    Work on this -> no negativity
     Main motivation for my interest in PL design are the frustrations from working with multiple mainstream languages.
     WIth a low
 
@@ -62,11 +64,11 @@ class: middle
     - In Stacc any construction that doesn't result in absurdity, aka Bottom, is considered a success.
     - Without having created any types, bottom can be summoned with {} e {}
 
-
+```
       fistTen = x e Nat
                 => | {},      if x  = 1  
                    | {} e {}, if x /= 1
-
+```
 ???
 
 
@@ -77,6 +79,7 @@ TODO: Read COC
 <!---  03-Motivation.org  -->
 
 # Motivation
+
     * Start from a richer metatheory
     
     * Decidability
@@ -92,7 +95,9 @@ These points can be shown with the photos of sets in Math and
 # Decidability vs formally verified
 
    * Add-hoc constrains
+
     - Push up the constraint
+
     - Complexity gets trimmed the more tight the function domain is. 
 
    * Type level enforcement of business invariants
@@ -114,6 +119,7 @@ very important for business invariants
 * Intersection / conjunction
 
 * "Fast and loose proving is morally correct"
+
     * The way to encode adhoc properties on elements
         e.g. newtype in haskell
 
@@ -122,6 +128,7 @@ very important for business invariants
 
 * They cannot combine the with a fundamental connective like And or intersection.
     - It would require newtype `propA_and_propB`
+
 ---
 
 * Uncle Bob: where is your composability now?    
@@ -420,9 +427,29 @@ x e ( < 3)
 }
 
 
+---
+#What's in a name
+--
+#RT at the type level
 
-<!--- ----------------------------------------------------- -->
-<!---  09-dinamyctiping.org  -->
+* Type references substitutable by type "content"
+    - Definion and properties that define that type
 
+* Establish a level of indirection
 
-* Dinamyc typing
+* Forces us to think about an additional constraint
+    - newtype is the lazy approach
+
+* Types also need to evolve to support those constraints
+    - e.g. types with units
+            Cars = Nat 'car  // car is an ato
+            so 3 car != 3 dollar != 3
+
+    - Adding decidability
+
+---
+
+#Data vs Functions
+
+* The chemistry analogy
+

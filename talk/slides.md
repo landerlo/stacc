@@ -1,7 +1,11 @@
+---
+layout: true
+class: middle
+---
 <!--- ----------------------------------------------------- -->
 <!---  01-whoami.org   -->
 
-* WHO AM I
+# WHO AM I
 
     - caveat emptor
     - All my academic publications have been in 140 char format
@@ -15,9 +19,10 @@
 ---
 
 <!--- ----------------------------------------------------- -->
-<!---  02-stacc-is.org  -->
+<!---  02.stack is   -->
 
-* STACC is 
+# STACC is 
+
     * Nobel core calculus for FP languages
         - Intended as vehicle for researching my FP lang ideas
       
@@ -29,11 +34,11 @@
 
 ---
 
-* STACC:
-    * Set Theoretic
-    * Algebraic
-    * Constructive
-    * Calculus
+# STACC:
+    - Set Theoretic
+    - Algebraic
+    - Constructive
+    - Calculus
 
 ---
 
@@ -135,9 +140,9 @@ very important for business invariants
 * Grammar
 
 <!--  Mayba have side by side panels to show examples alongside grammar, but without distracting about alignment -->
-```sh
-VAR=$id    --  a
-REF=$path  -- a.b.y
+```
+VAR= id    --  a
+REF= path  -- a.b.y
 
 POV=   VAR PRED         -- a = {}
 PRED=  e PSET              a = b
@@ -230,10 +235,10 @@ Well formed trees?
  * Enter references
    
     Being able to reference structures in the tree gives us cycle, loops, recursion.
-    
+```    
     Nat = {} | Succ
     Succ = { pred: Nat }
-
+```
   * /IMG Graph of NAT with the loops
    
   * Because we are only in the realm of data this is safe. Not general recursion   
@@ -256,14 +261,14 @@ Well formed trees?
 
     * Maybe we need a signature for induction steps. Ideas welcome
 
+---
 
 <!--- ----------------------------------------------------- -->
 <!---  06-typing  -->
 
+# TYPING
 
-* TYPING
-
-# After seeing inductive types we'll explore the typing judgement
+* After seeing inductive types we'll explore the typing judgement
 
 * A correct program in Stacc is a set of predicates that: 
     * don't lead to absurdity,  i.e. are true
@@ -279,19 +284,19 @@ Well formed trees?
    But we can create our own:
 
 * Let's create smaller than *<*  being Nat
-
+```
     < = { a: Nat,
           b: Nat,
           result = | {},              _if_  a  = {}, b /= {}  // (1) Indeed a < b the returned value is indiferent.
                    | {} e {},         _if_  b  = {}           // Absurdity a < b.
                    | a.pred < b.pred, _if_  b /= {}, a /= {}  // We don't know yet we retest with the predecessors
     }
-
+```
     - In the first clause we introduce Absurdity.
 
 * All the paths in the disjunction must be disjoint, i.e. no overlap.
 
---- 
+---
 
 * This way we can create a refinement type  < 2
 

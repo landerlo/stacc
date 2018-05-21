@@ -10,8 +10,8 @@ class: middle
     ...
 
     * caveat emptor
-    - All my academic publications have been in 140 char format
-    - Low in the retweet index for the community 
+        - All my academic publications have been in 140 char format
+        - Low in the retweet index for the community 
 
 ???
 /TODO:    Work on this -> no negativity
@@ -32,7 +32,8 @@ class: middle
       - The foundational metatheory is richer than LC
       - Nevertheless the semantics can be encoded in LC
     
-    * Aims at encoding advanced dependant FP constructs in a simple and unified way
+    * Interpretation of dependent FP
+        - Advanced constructs encoded in a simple and unified way
 
 ---
 
@@ -61,13 +62,13 @@ class: middle
 * Constructive
    
     - In order to have a witness or a proof we need to construct it
-    - In Stacc any construction that doesn't result in absurdity, aka Bottom, is considered a success.
+    - In Stacc any construction that doesn't result in absurdity <Faka Bottom, is considered a success.
     - Without having created any types, bottom can be summoned with {} e {}
 
 ```
-      fistTen = x e Nat
-                => | {},      if x  = 1  
-                   | {} e {}, if x /= 1
+      isLuckyNUmber = x e Nat
+                     =>  | {},      if x  = 7  
+                         | {} e {}, if x /= 7
 ```
 ???
 
@@ -84,7 +85,8 @@ TODO: Read COC
     
     * Decidability
 
-    * Hierarchical 
+    * Explore data function duality
+        - Graphs 
 
 ???
 
@@ -92,16 +94,27 @@ These points can be shown with the photos of sets in Math and
 
 ---
 
-# Decidability vs formally verified
+# Decidability
 
    * Add-hoc constrains
-
-    - Push up the constraint
-
-    - Complexity gets trimmed the more tight the function domain is. 
-
+    - i.e. not formally verified
+    
    * Type level enforcement of business invariants
 
+   * Push invariant checking to the caller 
+    - Function logic is simpler as domain is constrained
+
+---
+
+# Inversion of Optionality
+
+    * Mainstream approach: function handles optionality
+        squareRoot: Double => Option[Double] // If principled
+        --
+        squareRoot: Double => Double // throws Exception //TODO: Check Math.sqrt
+
+    * Instead we should push up optionality to the caller
+        squareRoot: Double nonNegative => Double
 ???
 
 Functions returning filtered results, Maybes or validation errors have the complexity of that optionality handling inside the function
@@ -128,6 +141,10 @@ very important for business invariants
 
 * They cannot combine the with a fundamental connective like And or intersection.
     - It would require newtype `propA_and_propB`
+---
+
+  Constraint is not first class with opaque types
+
 
 ---
 
@@ -208,9 +225,12 @@ Well formed trees?
 # Inductive types
     
  * The most famous inductive types Naturals, in the Peano encoding
-  - Let's consider zero is the starting point, let's use the empty set {}
+ 
+
+- Let's consider zero is the starting point, let's use the empty set {}
   - We construct the successors of the previous number.
-  - One as the successor of 0. 
+  - A successor is an object that has a _*pred*_ variable pointing to
+    
 
 ```sh
    zero = {} 

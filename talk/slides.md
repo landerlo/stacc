@@ -2,8 +2,6 @@
 layout: true
 class: middle
 ---
-<!--- ----------------------------------------------------- -->
-<!---  01-whoami.org   -->
 
 # WHO AM I
     
@@ -26,18 +24,29 @@ class: middle
 # STACC is 
 
     * Nobel core calculus for FP languages
-        - Intended as vehicle for researching my FP lang ideas
+      - Intended as a core language for experimenting my FP lang ideas
       
     * Unorthodox: not founded on the Lambda calculus
       - The foundational metatheory is richer than LC
-      - Nevertheless the semantics can be encoded in LC
-    
-    * Interpretation of dependent FP
-        - Advanced constructs encoded in a simple and unified way
+      --
+      - Conjeture: the semantics can be encoded in LC
+
+???
+
+   As an exercise for the reader
 
 ---
 
+# The sales pitch
+    
+    * An alternative interpretation of dependent FP
+        - Advanced constructs encoded in a simple and unified way
+
+    * Narrow the gap
+---
+
 # STACC:
+
     - Set Theoretic
     - Algebraic
     - Constructive
@@ -47,16 +56,22 @@ class: middle
 
 * Set theoretic
     * Primary building block is the set of predicates 
-    * Set semantics, union is function application
+    * Set semantics
+        - e.g. union is _function application_
 --
-    * But the _*ST*_ could be just as well Structural
+    * But the _*ST*_ could be just as well Structural!
 
 ---
 
 * Algebraic
     * LC has application and product
+        lambda x. xyz  
+    
     * STACC has application, product and coproduct
+     
+    * Coproduct / disjoint union
 
+        
 ---
 
 * Constructive
@@ -76,21 +91,71 @@ class: middle
     
 TODO: Read COC
 
-<!--- ----------------------------------------------------- -->
-<!---  03-Motivation.org  -->
+---
 
-# Motivation
+#Logic
 
-    * Start from a richer metatheory
+    * Uniquituous in Stacc
     
-    * Decidability
+    * Universal quantification
 
-    * Explore data function duality
-        - Graphs 
-
+    * Absurdity has a first class role
+    
 ???
+The missing letter in the Acronym
 
-These points can be shown with the photos of sets in Math and
+Logic. Permeates everything
+
+//TODO: Need to formalize more 
+
+---
+
+#First contact
+
+```
+A = {
+    x e P
+    }
+```
+
+* x e P <=> P(x)
+
+Vforall x in A P(x) holds
+
+---
+
+#Refinement / Constraints
+
+```
+A' = A u { x e S }
+
+A' = {
+      x e P
+      x e S
+     }
+```
+
+Vforall x in A P(x) & S(x) hold
+
+* Multiple properties can be assigned to same variable
+    - Coherence is required
+
+---
+
+* Coherence of properties
+    - either P are orthogonal or there is a subtyping relationship between P and S
+
+* Provenance doesn't matter
+
+---
+
+#What's a type
+
+* Is x of type P, of type S, intersection of both?
+
+* x doesn't HAVE a particular type
+
+* x can be found to 
 
 ---
 
@@ -111,7 +176,9 @@ These points can be shown with the photos of sets in Math and
     * Mainstream approach: function handles optionality
         squareRoot: Double => Option[Double] // If principled
         --
-        squareRoot: Double => Double // throws Exception //TODO: Check Math.sqrt
+        squareRoot: Double => Double // e.g. can return NAN
+        --
+        division:   Double => Double ... 1/0 throws exception           
 
     * Instead we should push up optionality to the caller
         squareRoot: Double nonNegative => Double
@@ -141,17 +208,22 @@ very important for business invariants
 
 * They cannot combine the with a fundamental connective like And or intersection.
     - It would require newtype `propA_and_propB`
+
+---
+
+# "Fast and loose proving is morally correct"
+
+???
+  Paraphrasing the famous FP quote from bananas
 ---
 
   Constraint is not first class with opaque types
-
 
 ---
 
 * Uncle Bob: where is your composability now?    
 
 ---
-
 
 * We are missing composability at the type level
 
@@ -315,13 +387,14 @@ Well formed trees?
     < = { a: Nat,
           b: Nat,
           result = | {},              _if_  a  = {}, b /= {}  // (1) Indeed a < b the returned value is indiferent.
-                   | {} e {},         _if_  b  = {}           // Absurdity a < b.
+                   | {} e {},         _if_  b  = {}           // a < b leads to absurdity
                    | a.pred < b.pred, _if_  b /= {}, a /= {}  // We don't know yet we retest with the predecessors
     }
 ```
-    - In the first clause we introduce Absurdity.
+    - In the second clause we introduce Absurdity.
 
 * All the paths in the disjunction must be disjoint, i.e. no overlap.
+    - More principled than the usual fall through case statements
 
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: true
-class: middle
+class: top
 ---
 
-# WHO AM I
+#WHO AM I
     
     ...
 
@@ -18,18 +18,17 @@ class: middle
 
 ---
 
-<!--- ----------------------------------------------------- -->
-<!---  02.stack is   -->
-
-# STACC is 
+#STACC is 
 
     * Nobel core calculus for FP languages
       - Intended as a core language for experimenting my FP lang ideas
       
     * Unorthodox: not founded on the Lambda calculus
       - The foundational metatheory is richer than LC
-      --
-      - Conjeture: the semantics can be encoded in LC
+
+--
+
+      - Conjeture: it can be fully encoded in LC
 
 ???
 
@@ -37,22 +36,22 @@ class: middle
 
 ---
 
-# The sales pitch
+#The sales pitch
     
     * An alternative interpretation of dependent FP
         - Advanced constructs encoded in a simple and unified way
 
     * Narrow the gap
+
 ---
 
-# STACC:
+#STACC: 
 
     - Set Theoretic
     - Algebraic
-    - Constructive
-    - Calculus
+    - Constructive Calculus 
 
----
+--- 
 
 * Set theoretic
     * Primary building block is the set of predicates 
@@ -71,7 +70,6 @@ class: middle
      
     * Coproduct / disjoint union
 
-        
 ---
 
 * Constructive
@@ -86,8 +84,6 @@ class: middle
                          | {} e {}, if x /= 7
 ```
 ???
-
-
     
 TODO: Read COC
 
@@ -95,7 +91,7 @@ TODO: Read COC
 
 #Logic
 
-    * Uniquituous in Stacc
+    * Ubiquituous in Stacc
     
     * Universal quantification
 
@@ -112,19 +108,25 @@ Logic. Permeates everything
 
 #First contact
 
+* 
+
+* Variables and properties on variables
+
 ```
-A = {
-    x e P
+{ 
+    A = {
+        x e P
     }
+}
 ```
 
 * x e P <=> P(x)
 
 Vforall x in A P(x) holds
-
+ 
 ---
-
-#Refinement / Constraints
+ 
+# Refinement / Constraints
 
 ```
 A' = A u { x e S }
@@ -174,14 +176,23 @@ Vforall x in A P(x) & S(x) hold
 # Inversion of Optionality
 
     * Mainstream approach: function handles optionality
-        squareRoot: Double => Option[Double] // If principled
-        --
-        squareRoot: Double => Double // e.g. can return NAN
-        --
-        division:   Double => Double ... 1/0 throws exception           
 
-    * Instead we should push up optionality to the caller
-        squareRoot: Double nonNegative => Double
+        - `squareRoot: Double => Option[Double]` // If principled
+
+--
+
+        - `squareRoot: Double => Double` // e.g. can return NAN
+
+--
+
+        - `division:   Double => Double` ... 1/0 throws exception           
+
+--
+
+     * Instead we should push up optionality to the caller
+
+        - `squareRoot: NegativeDouble => NonNegativeDouble`
+
 ???
 
 Functions returning filtered results, Maybes or validation errors have the complexity of that optionality handling inside the function
@@ -228,10 +239,6 @@ very important for business invariants
 * We are missing composability at the type level
 
 ---
-
-<!--- ----------------------------------------------------- -->
-<!---  04-grammar.org  -->
-
 
 * Grammar
 
@@ -297,7 +304,6 @@ Well formed trees?
 # Inductive types
     
  * The most famous inductive types Naturals, in the Peano encoding
- 
 
 - Let's consider zero is the starting point, let's use the empty set {}
   - We construct the successors of the previous number.
@@ -362,9 +368,6 @@ Well formed trees?
 
 ---
 
-<!--- ----------------------------------------------------- -->
-<!---  06-typing  -->
-
 # TYPING
 
 * After seeing inductive types we'll explore the typing judgement
@@ -423,12 +426,9 @@ Well formed trees?
     
 * We 
 
+---
 
-<!--- ----------------------------------------------------- -->
-<!---  07-functions.org  -->
-
-
-* FUNCTIONS
+# FUNCTIONS
 
 * e.g. Addition. Relation of a product of two nats with another nat
 

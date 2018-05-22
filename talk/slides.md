@@ -7,9 +7,9 @@ class: top
 
     ...
 
-    * caveat emptor
-        - All my academic publications have been in 140 char format
-        - Low in the retweet index for the community 
+* caveat emptor
+    - All my academic publications have been in 140 char format
+    - Low in the retweet index for the community
 
 ???
 /TODO:    Work on this -> no negativity
@@ -20,16 +20,15 @@ class: top
 
 #STACC is 
 
-    * Nobel core calculus for FP languages
-      - Intended as a core language for experimenting my FP lang ideas
+* Nobel core calculus for FP languages
+  - Intended as a core language for experimenting my FP lang ideas
 
-    * Unorthodox: not founded on the Lambda calculus
-
-      - The foundational metatheory is richer than LC
+* Unorthodox: not founded on the Lambda calculus
+  - The foundational metatheory is richer than LC
 
 --
 
-      - Conjeture: it can be fully encoded in LC  
+* Conjeture: it can be fully encoded in LC
 
 ???
 
@@ -39,76 +38,86 @@ class: top
 
 #The sales pitch
 
-    * An alternative interpretation of dependent FP
-        - Advanced constructs encoded in a simple and unified way
+* An alternative interpretation of dependent FP
+    - Advanced constructs encoded in a simple and unified way
 
-    * Narrow the gap
+* Narrow the gap
 
 ---
 
 #STACC: 
 
-    * Set Theoretic
-    * Algebraic
-    * Constructive Calculus
+* Set Theoretic
+* Algebraic
+* Constructive Calculus
 
 ---
 
 # Set theoretic
-    * Primary building block is the set of predicates
-    * Set semantics
-        - e.g. union is _function application_
+* Primary building block is the set of predicates
+* Set semantics
+    - e.g. union is _function application_
 
-    * But the _*ST*_ could be just as well Structural!
+--
 
----
-
-* Algebraic
-    * LC has application and product
-        lambda x. xyz  
-
-    * STACC has application, product and coproduct
-
-    * Coproduct / disjoint union
+* But the _*ST*_ could be just as well Structural!
 
 ---
 
-* Constructive
-    - In order to have a witness or a proof we need to construct it
-    - In Stacc any construction that doesn't result in absurdity <Faka Bottom, is considered a success.
-    - Without having created any types, bottom can be summoned with {} e {}
+# Algebraic
+* LC has application and product
+    - lambda x. xyz
+
+* STACC has application, product and coproduct
+
+* Coproduct / disjoint union
+    - conditional values
+```
+    b = | 0  if a < 0
+        | a  otherwise
+```
+
+---
+
+# Constructive
+
+* In order to have a proof we need to _*construct*_ it
+
+* Construction is successful if it doesn't result in absurdity
+    - Aka Bottom
+
+* Bottom can be summoned with {} e {}
 
 ```
       isLuckyNUmber = x e Nat
                      =>  | {},      if x  = 7
                          | {} e {}, if x /= 7
 ```
+
 ???
-    
+
 TODO: Read COC
 
 ---
 
 #Logic
 
-    * Ubiquituous in Stacc
-    
-    * Universal quantification
+* Ubiquituous in Stacc
 
-    * Absurdity has a first class role
-    
+* Universal quantification
+
+* Absurdity has a first class role
+
 ???
 The missing letter in the Acronym
 
 Logic. Permeates everything
 
-//TODO: Need to formalize more 
+//TODO: Need to formalize more
 
 ---
 
 #First contact
-
-* 
 
 * Variables and properties on variables
 
@@ -123,9 +132,9 @@ Logic. Permeates everything
 * x e P <=> P(x)
 
 Vforall x in A P(x) holds
- 
+
 ---
- 
+
 # Refinement / Constraints
 
 ```
@@ -157,41 +166,42 @@ Vforall x in A P(x) & S(x) hold
 
 * x doesn't HAVE a particular type
 
-* x can be found to 
+* x can be found to
 
 ---
 
 # Decidability
 
-   * Add-hoc constrains
+* Add-hoc constrains
     - i.e. not formally verified
-    
-   * Type level enforcement of business invariants
 
-   * Push invariant checking to the caller 
+* Type level enforcement of business invariants
+
+* Push invariant checking to the caller
     - Function logic is simpler as domain is constrained
 
 ---
 
 # Inversion of Optionality
 
-    * Mainstream approach: function handles optionality
+* Mainstream approach: function handles optionality
 
-        - `squareRoot: Double => Option[Double]` // If principled
-
---
-
-        - `squareRoot: Double => Double` // e.g. can return NAN
+   `squareRoot: Double => Option[Double]` // If principled
 
 --
 
-        - `division:   Double => Double` ... 1/0 throws exception           
+   `squareRoot: Double => Double` // e.g. can return NAN
 
 --
 
-     * Instead we should push up optionality to the caller
+   `division:   Double => Double` ... 1/0 throws exception
 
-        - `squareRoot: NegativeDouble => NonNegativeDouble`
+--
+
+
+* Instead we should push up optionality to the caller
+
+    `squareRoot: NegativeDouble => NonNegativeDouble`
 
 ???
 

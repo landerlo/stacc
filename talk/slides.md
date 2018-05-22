@@ -4,7 +4,7 @@ class: top
 ---
 
 #WHO AM I
-    
+
     ...
 
     * caveat emptor
@@ -22,13 +22,14 @@ class: top
 
     * Nobel core calculus for FP languages
       - Intended as a core language for experimenting my FP lang ideas
-      
+
     * Unorthodox: not founded on the Lambda calculus
+
       - The foundational metatheory is richer than LC
 
 --
 
-      - Conjeture: it can be fully encoded in LC
+      - Conjeture: it can be fully encoded in LC  
 
 ???
 
@@ -37,7 +38,7 @@ class: top
 ---
 
 #The sales pitch
-    
+
     * An alternative interpretation of dependent FP
         - Advanced constructs encoded in a simple and unified way
 
@@ -47,17 +48,17 @@ class: top
 
 #STACC: 
 
-    - Set Theoretic
-    - Algebraic
-    - Constructive Calculus 
+    * Set Theoretic
+    * Algebraic
+    * Constructive Calculus
 
---- 
+---
 
-* Set theoretic
-    * Primary building block is the set of predicates 
+# Set theoretic
+    * Primary building block is the set of predicates
     * Set semantics
         - e.g. union is _function application_
---
+
     * But the _*ST*_ could be just as well Structural!
 
 ---
@@ -65,22 +66,21 @@ class: top
 * Algebraic
     * LC has application and product
         lambda x. xyz  
-    
+
     * STACC has application, product and coproduct
-     
+
     * Coproduct / disjoint union
 
 ---
 
 * Constructive
-   
     - In order to have a witness or a proof we need to construct it
     - In Stacc any construction that doesn't result in absurdity <Faka Bottom, is considered a success.
     - Without having created any types, bottom can be summoned with {} e {}
 
 ```
       isLuckyNUmber = x e Nat
-                     =>  | {},      if x  = 7  
+                     =>  | {},      if x  = 7
                          | {} e {}, if x /= 7
 ```
 ???
@@ -113,7 +113,7 @@ Logic. Permeates everything
 * Variables and properties on variables
 
 ```
-{ 
+{
     A = {
         x e P
     }
@@ -278,7 +278,7 @@ PSET= {}
 ```
 Forall v, p in pset p e U
 
-x e PWSet Y iff Forall v in VARS(Y), 
+x e PWSet Y iff Forall v in VARS(Y),
             v e VARS(X) AND Unified(x.v) PROP_SUBSET Unified(Y.v)
 
 PROPS_SUBSET pa, pb = (pa, pb) match {
@@ -286,7 +286,7 @@ PROPS_SUBSET pa, pb = (pa, pb) match {
     case e A, e B:  A subset B
 ```
 
-??? 
+???
 Introduce other rules
 
 ---
@@ -302,13 +302,13 @@ Well formed trees?
 <!---  05-recursive.org  -->
 
 # Inductive types
-    
+
  * The most famous inductive types Naturals, in the Peano encoding
 
 - Let's consider zero is the starting point, let's use the empty set {}
   - We construct the successors of the previous number.
   - A successor is an object that has a _*pred*_ variable pointing to
-    
+
 
 ```sh
    zero = {} 
@@ -324,7 +324,6 @@ Well formed trees?
  ... But where are the types? We haven't created any abstraction about the Naturals.
   We can just construct instances of numbers.
 
-    
    We want x e Nat
    Nat = ???
 
@@ -338,16 +337,16 @@ Well formed trees?
 ---
 
  * Enter references
-   
+
     Being able to reference structures in the tree gives us cycle, loops, recursion.
 ```    
     Nat = {} | Succ
     Succ = { pred: Nat }
 ```
   * /IMG Graph of NAT with the loops
-   
-  * Because we are only in the realm of data this is safe. Not general recursion   
-  
+
+  * Because we are only in the realm of data this is safe. Not general recursion
+
    Gives us a solid foundation.
 
 ???
@@ -355,12 +354,12 @@ Well formed trees?
 
 ---
 
-* Succ: Nat -> Nat 
+* Succ: Nat -> Nat
     * Is too powerful for the induction step Succ { pred: Nat }
-    
+
     * f: Nat -> Nat can be adding two or not terminate in your lifetime your if f = 'the Nth Prime'
 
-* In Stacc Succ { pred: Succ } can be seen as Nat -> Nat if necessary but it is explicitly typed as itself: 
+* In Stacc Succ { pred: Succ } can be seen as Nat -> Nat if necessary but it is explicitly typed as itself:
     { pred: Nat }
     We create something depending on a Nat.
 
@@ -372,10 +371,10 @@ Well formed trees?
 
 * After seeing inductive types we'll explore the typing judgement
 
-* A correct program in Stacc is a set of predicates that: 
+* A correct program in Stacc is a set of predicates that:
     * don't lead to absurdity,  i.e. are true
     * They are internally consistent
-  
+
 * Rather than having a true of false in Stacc we have the ability to bring absurdity, bottom.
     { a e {} } member of the empty set, this is impossible.
 
@@ -414,17 +413,16 @@ Well formed trees?
         ...
     }
 
-    
+
     { y : Nat
       f = fact u { a = y } 
       /// !!! will fail. No evidence that f is smaller than that.
 
       # We need to provide the witness
       f = | fact u { a = y },  if a < u { b = 20 }   
-    
 
-    
-* We 
+
+* We
 
 ---
 
@@ -432,7 +430,7 @@ Well formed trees?
 
 * e.g. Addition. Relation of a product of two nats with another nat
 
-Product of two nats 
+Product of two nats
 { a: Nat, b: Nat }
 
 # Explain the typing here? Probably better before. After the recursive type.
@@ -458,7 +456,7 @@ Relation with the addition
 
 /IMG of the relation between numbers sets
 
- show 1 + 2 
+ show 1 + 2
 
 
 <!--- ----------------------------------------------------- -->
@@ -515,7 +513,7 @@ Equally we could establish other properties.
 
 smallerThan3 = {
 
-x e ( < 3) 
+x e ( < 3)
 
 }
 

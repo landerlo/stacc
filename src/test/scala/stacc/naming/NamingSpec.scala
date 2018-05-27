@@ -4,10 +4,14 @@ import org.scalatest.FreeSpec
 import stacc.ast._
 import stacc.ast.PSet.empty
 import stacc.ast.AstSyntax._
-import stacc.logic.Top
+import stacc.logic.{Bottom, Top}
 import Resolve.resolve
-import scalaz.{\/-, NonEmptyList => NEL}
+import scalaz.{-\/, \/, \/-, NonEmptyList => NEL}
 import AstSyntax._
+import stacc.math.domain
+import scalaz.syntax.monad._
+import stacc.logic._
+
 
 class NamingSpec extends FreeSpec {
 
@@ -23,60 +27,59 @@ class NamingSpec extends FreeSpec {
       val B = 'B := Ref(Path("A.a"))
 
 
-      assert { resolve(Path("A.a"))(PSet(A, B))(\/-(PSet(A, B))) === Top(NEL(:=(empty))) }
+      assert { resolve(PSet(A, B))(-\/(Ref("A.a"))) === Top(:=(empty)) }
 
     }
-    "Successful reference out of order" in {
-     val B = 'B := Ref(Path("A.a"))
-     val A = 'A := PSet('a := empty)
+    "Successful reference out of order" in assert {
+      val B = 'B := Ref(Path("A.a"))
+      val A = 'A := PSet('a := empty)
 
-//      val resolved = ??? // Resolve.resolve(Path("B"), PSet(B, A))
-
-//      assert {
-//        resolved.isDefined
-//      }
-
-//      assert { resolved === Some(empty) }
+      resolve(PSet(B, A))(-\/(Ref("B"))) === Top(:=(Ref("A.a")))
     }
+
     "Chained references" in {
 
       val A = 'A := PSet('a := 'C)
-      val B = 'B := Ref(Path("A.a"))
+      val B = 'B := Ref(Path("A"))
       val C = 'C := empty
-//      val resolved = Resolve.resolve(Path("A.a"), PSet(A, B, C))
 
-//      assert { resolved.isDefined }
+      assert { resolve(PSet(A, B, C))(-\/(Ref("B.a"))) === Top(:=(Ref("C"))) }
 
-//      assert { resolved === Some(empty) }
     }
+
     "Incorrect reference" in {
-      val A = 'A := PSet('a := 'Z)
-      val B = 'B := Ref(Path("A.a"))
-      val C = 'C := empty
-//      assert { Resolve.resolve(Path("A"), PSet(A, B, C))   === Some(A.propsValue) }
-//      assert { Resolve.resolve(Path("B"), PSet(A, B, C))   === Some(Absurdity()) }
-//      assert { Resolve.resolve(Path("A.a"), PSet(A, B, C)) === Some(Absurdity()) }
-    }
-   "Incompatible body" in {
-      val A = 'A := PSet('a := PSet(
-        'B := PSet('y := empty),
-        'g := empty,
-        'B := PSet('x := PSet('k := empty))))
+      val A = PSet('a := 'Z)
+      val B = Ref(Path("A.a"))
+      val C = empty
 
-//      assert { Resolve.resolve(Path("a.B.x"), PSet(A)) === Some(Absurdity()) } //It should be error
+      assert { resolve(PSet('A := A, 'B := B, 'C := C))(-\/(Ref("A.b"))) === Bottom[Ref \/ PSet](Lie('b ee A)) }
+    }
+
+   "Incongruent, incompatible variables" in {
+      val E1 = PSet('x := PSet('k := empty))
+      val E2 = PSet('y := empty)
+
+      val EsNotConguent = PSet(
+        'a := PSet(
+          'E := E1,
+          'g := empty,
+          'E := E2
+        )
+      )
+     assert { resolve(EsNotConguent)(-\/(Ref("a.E.x"))) === Bottom(Lie(Congruent(E1, E2))) }
     }
    }
 
-  "Var extraction" - {
-      val Z = PSet('a := 'Z)
-    "GetVar duplicated are discarded" in assert {
-      true
-      //    PSet('a := empty, 'b := empty, 'a := empty).getProp("a") === Some(empty)
-     }
-    "GetVar multiple props" in assert { true
-     // ConcreteVarPSet('a := empty, 'b := empty, 'a := Z).getProp("a") === Some(PropUnion(empty, Z))
-     // ConcreteVarPSet('a := empty, 'b := empty, 'a := Z).getProp("a") === Some(PropUnion(Z, empty))
+  "Var projection" - {
+    import Project.project
+    val Z = PSet('a := 'Z)
+
+    "GetVar duplicates are removed" in assert {
+       project('a)(PSet('a := empty, 'b := empty, 'a := empty)) === Top(NEL(:=(empty)))
      }
 
+    "GetVar multiple props" in assert {
+      project('a)(PSet('a := empty, 'b := empty, 'a := Z)) === Top(NEL(:=(empty), :=(Z)))
+     }
   }
 }

@@ -10,6 +10,6 @@ object SubsumptionRelation {
  case class Intersection(resA: PSet, intersection: PSet, restB: PSet) extends SubsumptionRelation
 
  def relation(a: PSet, b: PSet): Ev[SubsumptionRelation] = {
-  Orthogonal(a, b)
+  Top(Orthogonal(a, b))
  }
 }

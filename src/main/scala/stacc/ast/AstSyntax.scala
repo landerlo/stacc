@@ -35,6 +35,7 @@ object AstSyntax {
     def ee(s: Symbol) = PropOnVar(Var(v.name),  MemberOf(-\/(Ref(Path(s.name)))))
     def ee(ps: PSet)  = PropOnVar(Var(v.name),  MemberOf(\/-(ps)))
     def ee(ref: Ref)  = PropOnVar(Var(v.name),  MemberOf(-\/(ref)))
+    def ee(s: Ref \/ PSet)  = PropOnVar(Var(v.name),  MemberOf(s))
   }
 
 

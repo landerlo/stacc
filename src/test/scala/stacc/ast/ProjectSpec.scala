@@ -3,6 +3,7 @@ package stacc.ast
 import org.scalatest.FreeSpec
 import PSet._
 import AstSyntax._
+import stacc.logic.Lie
 //import scalaz.{IList, Monad, \/-, NonEmptyList => NEL}
 import Project.project
 import stacc.logic.{Bottom, Ev, Top}
@@ -25,7 +26,7 @@ class ProjectSpec extends FreeSpec {
     "Variable doesn't exist" in {
       val ps = PSet('a := 'A, 'b := Ø, 'E := Ø)
       assert {
-        project('z)(ps) === Bottom('z ee (ps))
+        project('z)(ps) === Bottom(Lie('z ee (ps)))
       }
 
       val x: Ev[NEL[Equals]] = implicitly[Monad[Ev]].point(NEL(:=(Ø)))

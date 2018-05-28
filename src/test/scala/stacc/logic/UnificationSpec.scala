@@ -13,15 +13,15 @@ class UnificationSpec extends FreeSpec {
   val C =  PSet('c := empty)
 
   "Orthogonal set membership" - {
-    "membership of orthogonal sets results in union" in assert {
-      unify(p => Top(Equals(p)))(NEL.nels(ee(A), ee(B))) === Top(ee(PSet('a := empty, 'b := empty, 'c := empty)))
+    "membership of orthogonal sets results in membership of the union" in assert {
+      unify(p => Top(Equals(p)))(NEL.nels(ee(A), ee(B))) === Top(ee(PSet('a := empty, 'b := empty)))
     }
 
   }
   "Unification of incongruent variable" in {
-    val E1 = PSet('x := PSet('k := empty))
-    val E2 = PSet('y := empty)
-    assert { unify(p => Top(Equals(p)))(NEL.nels(ee(E1), ee(E2))) === Bottom(Lie(Congruent(E1, E2))) }
+    val e1X = PSet('k := empty)
+    val e2X = empty
+    assert { unify(p => Top(Equals(p)))(NEL.nels(ee(PSet('x := e1X)), ee(PSet('x := e2X)))) === Bottom(Lie(Equal(e1X, e2X))) }
   }
 }
 

@@ -17,10 +17,7 @@ object PSet {
    def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
 }
 
-trait Prop
-case class Equals(target: Ref \/ PSet) extends Prop
-case class MemberOf(target: Ref \/ PSet) extends Prop
-case class Congruent(a: PSet, b: PSet) extends Prop
+
 
 case class PropOnVar(v: Var, p: Prop)
 

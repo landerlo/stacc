@@ -66,7 +66,7 @@ class NamingSpec extends FreeSpec {
           'E := E2
         )
       )
-     assert { resolve(EsNotConguent)(-\/(Ref("a.E.x"))) === Bottom(Lie(Congruent(E1, E2))) }
+     assert { resolve(EsNotConguent)(-\/(Ref("a.E.x"))) === Bottom(Lie(Equal(E1, E2))) }
     }
    }
 

@@ -21,9 +21,10 @@ class: top
 
 ???
 
+Takes the unorthodox approach of not being rooted on Lambda C
+
 Is a core calculus to support the building of FP languages
 
-Takes the unorthodox approach of not being rooted on Lambda calculus
 
 ---
 
@@ -34,6 +35,7 @@ Takes the unorthodox approach of not being rooted on Lambda calculus
 
 * Unifies many PL constructs in a minimalistic and approachable way
     - Familiar notation and semantics rooted on Set theory
+
 
 ???
 
@@ -113,129 +115,102 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 
 ---
 
-#First contact
+#Properties vs Booleans
 
-* Sets of predicates on variables
-    - Propositions as types!
- 
-```sh
-  {
-    A = {
-        x ∈ P
-    }
-  }
-```
+* Commonly logic and properties represented as booleans
 
-* `x ∈ P <=> P(x)`
+    - Boolean blindness
 
-* Forall ∀x in A, P(x) holds
+* We want predicates enforceable by compiler
 
-* ∀ (v, P) in Set, P holds
-
-
-???
-
-Labels
-
----
-
-# Refinement
-
-* Multiple properties can be assigned to same variable
-
-* Congruency required
-
-```scala
-    A  = { x ∈ P }
-
-    A' = A u { x ∈ S, y ∈ R }
-
-    A' = {
-          x ∈ P
-          x ∈ S
-          y ∈ R
-         }
-```
-
-???
-
- Predicates for same variable must unify
-
-  If all variables are congruent the whole set is congruent
-
----
-
-#Congruency
-
-```
- {
-      x ∈ P
-      x ∈ S
-
-      y ∈ O
- }
-```
-
-* Congruent if either
-    - P and S are orthogonal
-    - There is a subtyping relationship between P and S
-
-???
-
-And O is NOT the empty set
-
-Todo show graph of venn diagrams
-
----
-
-#Orthogonality and Subtyping
-
-```
-Location = { latitude: Lat, longitude: Long }
-
-Time = { hour: Hour, minute: Minute }
-
-EventSpot = {
-   s: Location
-   s: Time }
-
-myParty = {
-    location = { level = 3, latitude = ???, longitude = ??? }
-    guests = ???
-    hour = ???
-    minute = ???  }
-
-myParty: EventSpot
-```
-
----
-
-#Structurality
-
-* Top level name just a reference
-
-* Provenance doesn't matter
-
-```
-A  = { x ∈ P }
-
-Y = A u { x ∈ S }
-
-Z = { x ∈ S, x ∈ P }
-
-```
-
-* Y and Z are equivalent
+* Line between type and refinement or constraint blurred
 
 --
 
-* Local reasoning
+* Propositions as types!
 
-* "Referential transparency" at the type level
+---
+
+# Decidability
+
+* Add-hoc constrains
+    - i.e. not formally verified
+
+* Type level enforcement of business invariants
+
+* Push invariant checking to the caller
+    - Function logic is simpler as domain is constrained
+
+---
+
+# Inversion of Optionality
+
+* Mainstream approach: function handles optionality
+
+* Principled
+
+    - squareRoot: Double => Option[Double]
+
+--
+
+* The hidden surprise
+    - squareRoot: Double => Double
+
+--
+
+* Non total functions abound
+   - division:   Double => Double
+
+---
+class: middle
+# Demand Totality
+
+## We should push up optionality to the caller
+
+* i.e squareRoot: NonNegativeDouble => NonNegativeDouble
+
+* Usually achieved with newtypes
+???
+
+---
+
+# Newtype shortcomings
+
+
+* No support for intersection and conjuction of properties
+    - e.g. with multiple invariants
+```haskell
+        newtype propA 
+        newtype propB
+```
+
+* We cannot create a type intersection
+    - It would require newtype `propA_and_propB`
 
 ???
 
-Scala problems
+There are some fringe ways
+
+Dotty might be do things better
+
+---
+
+background-image: url(img/uncle-bob.png)
+
+---
+class:middle
+
+## We are missing composability at the type level
+
+---
+
+#An example: safe factorial
+
+`safeFactorial: x: Nat, x < 20 => Nat`
+
+--
+
+* We will have to build Naturals, smaller than (<) and addition
 
 ---
 
@@ -268,6 +243,7 @@ Scala problems
 * We want to specify `x ∈ Nat`
 
 * Let's try:
+
 ```
    Nat = {} | Succ
 
@@ -312,109 +288,6 @@ Scala problems
 
 ---
 
-# Decidability
-
-* Add-hoc constrains
-    - i.e. not formally verified
-
-* Type level enforcement of business invariants
-
-* Push invariant checking to the caller
-    - Function logic is simpler as domain is constrained
-
----
-
-# Inversion of Optionality
-
-* Mainstream approach: function handles optionality
-
-* Principled
-
-    - squareRoot: Double => Option[Double]
-
---
-
-* The usual suspect
-    - squareRoot: Double => Double
-
---
-
-* Non total functions abound
-   - division:   Double => Double
-
----
-class: middle
-# Demand Totality
-
-## We should push up optionality to the caller
-
-    - squareRoot: NegativeDouble => NonNegativeDouble
-
-???
-
----
-
-# Ad hoc constraints
-
-```
-factorial = {
-  bound: Nat
-  x: Nat
-  x < bound
-
-  => x * factorial(x.pred)
-}
-
-safeFactorial = factorial u { bound = 20 }
-
-'factorial of y' = 
-    | safeFactorial u { x = y }, if x < safeFactorial.bound 
-    | {}                         otherwise
-
-```
-
----
-class:middle
-
-##"Fast and loose __proving__ is morally correct"
-
-???
-
-  Paraphrasing the famous FP quote from bananas &  & barbed wire
-
----
-
-#Newtypes are not _"fast"_
-
-* No support for intersection and conjuction of properties
-    - e.g.
-```haskell
-        newtype propA 
-        newtype propB
-```
-
-* We cannot create a type intersection
-    - It would require newtype `propA_and_propB`
-
-* Conjunction is missing
-
-???
-
-There are some fringe ways
-
-Dotty might be do things better
-
----
-
-background-image: url(img/uncle-bob.png)
-
----
-class:middle
-
-## We are missing composability at the type level
-
----
-
 # Creating our own constraint
 
 * Let's create smaller than *<*
@@ -433,6 +306,16 @@ class:middle
     - More principled than the usual fall through case statements
 
 ---
+class:middle
+
+##"Fast and loose __proving__ is morally correct"
+
+???
+
+  Paraphrasing the famous FP quote from bananas &  & barbed wire
+
+---
+
 
 # FUNCTIONS
 
@@ -501,6 +384,10 @@ idNat = {
 ???
 
 ---
+#Lists
+
+
+---
 
 # Thank you
 
@@ -515,4 +402,5 @@ idNat = {
 --
 
 * Stack your blocks and build types
+
 

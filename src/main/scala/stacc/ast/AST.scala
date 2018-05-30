@@ -9,12 +9,19 @@ case class Ref(path: Path)
 object Ref {
   def apply(path: String): Ref = Ref(Path(path))
 }
-case class PSet(vs: Set[PropOnVar])
+
+trait PSet
+
+case object SET extends PSet
 
 object PSet {
-   val empty = PSet(Set[PropOnVar]())
-   val Ø = empty
-   def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
+  def apply(vs: Set[PropOnVar]): PSet = ConcPSet(vs)
+  def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
+
+  case class ConcPSet(vs: Set[PropOnVar]) extends PSet
+
+  val empty = ConcPSet(Set[PropOnVar]())
+  val Ø = empty
 }
 
 

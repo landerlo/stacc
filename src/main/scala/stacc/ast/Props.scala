@@ -4,7 +4,10 @@ import stacc.util.NELExtension.distinct
 import scalaz.{IList, INil, Order, \/, NonEmptyList => NEL}
 import stacc.logic._
 import stacc.logic.Ev._
-import scalaz._, std.list._, syntax.traverse._
+import scalaz._
+import stacc.ast.PSet.ConcPSet
+import std.list._
+import syntax.traverse._
 sealed trait Prop
 case class Equals(target: Ref \/ PSet) extends Prop
 case class MemberOf(target: Ref \/ PSet) extends Prop
@@ -16,7 +19,7 @@ case class MemberOf(target: Ref \/ PSet) extends Prop
   expected in the grammar.
  */
 sealed trait LogicPred
-case class Congruent(a: PSet, b: PSet) extends LogicPred {
+case class Congruent(a: ConcPSet, b: ConcPSet) extends LogicPred {
   def eval(resolve: Ref \/ PSet => Ev[Prop]): Ev[PSet] = {
     val intersection = a.vs.map(_.v).intersect(b.vs.map(_.v))
 
@@ -32,7 +35,7 @@ case class Congruent(a: PSet, b: PSet) extends LogicPred {
       un
     }.sequenceU
 
-    val notInIntersection = (pset: PSet) => pset.vs.filter(pov => !intersection.contains(pov.v))
+    val notInIntersection = (pset: ConcPSet) => pset.vs.filter(pov => !intersection.contains(pov.v))
 
     congruentShared.map(cong => PSet(cong.toList.toSet ++ notInIntersection(a) ++ notInIntersection(b)))
 

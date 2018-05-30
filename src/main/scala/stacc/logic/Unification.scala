@@ -6,6 +6,7 @@ import stacc.ast.AstSyntax._
 import scalaz.Semigroup._
 import scalaz.syntax.semigroup._
 import scalaz.syntax.monad._
+import stacc.ast.PSet.ConcPSet
 import stacc.logic.Ev._
 import stacc.math.domain
 
@@ -18,7 +19,7 @@ object Unification {
   }
 
   def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop])(a: Prop, b: Prop): Ev[Prop] = (a, b) match {
-    case (MemberOf(\/-(as: PSet)), MemberOf(\/-(bs: PSet))) => Congruent(as, bs).eval(resolve).map(p => ee(p))
+    case (MemberOf(\/-(as: ConcPSet)), MemberOf(\/-(bs: ConcPSet))) => Congruent(as, bs).eval(resolve).map(p => ee(p))
     case (Equals(\/-(as: PSet)), Equals(\/-(bs: PSet))) => Equal(as, bs).eval.map(p => :=(p))
     case (_, _) => ???
   }

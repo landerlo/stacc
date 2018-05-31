@@ -7,7 +7,7 @@ Z [label="{}"]
 
 Nat -> Succ 
 Nat -> Z
-Succ -> Z [label="pred"]
+Succ -> Nat [label="pred"]
 
 1 -> Z [label="pred"]
 }

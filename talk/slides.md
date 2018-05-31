@@ -210,7 +210,7 @@ class:middle
 
 --
 
-* We will have to build Naturals, smaller than (<) and addition
+* We will have to build Naturals, smaller than and addition
 
 ---
 
@@ -265,7 +265,7 @@ class:middle
 
 --
 
-* Because we are only in the realm of data this is safe. 
+* Because we are only in the realm of data this is safe.
     - _*NOT*_ general recursion
     - Gives us a solid foundation.
 
@@ -291,26 +291,27 @@ background-image: url(img/nats-graph-scaled.png)
 
 --
 
-* Maybe we need a signature for induction steps. Ideas welcome
+* Maybe we need a signature for induction steps
 
 ---
 
 # Creating our own constraint
 
-* Let`s create smaller than `(<)`
+* Let's create smaller than
 
 ```
     < = { a: Nat
           b: Nat
 
-          => | {}               if  a  = {}, b /= {}  
-             | {} ∈ {}          if  b  = {}          
+          => | {}               if  a  = {}, b /= {}
+             | {} ∈ {}          if  b  = {}
              | a.pred < b.pred  if  b /= {}, a /= {}
     }
 ```
-    - In the second clause we introduce Absurdity.
+* In the second clause we introduce Absurdity.
 
 * All the paths in the disjunction must be disjoint, i.e. no overlap.
+
     - More principled than the usual fall through case statements
 
 ---
@@ -323,7 +324,6 @@ class:middle
   Paraphrasing the famous FP quote from bananas &  & barbed wire
 
 ---
-
 
 # FUNCTIONS
 
@@ -392,13 +392,8 @@ idNat = {
 ???
 
 ---
-#Lists
-
-
----
 
 # Thank you
-
 
 
 * Demand ad-hoc constraints

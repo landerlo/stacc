@@ -230,6 +230,7 @@ class:middle
 ```
 
 ???
+
  * All the data structures we can create are finite
 
  ... But where are the types? We haven't created any abstraction about the Naturals.
@@ -263,6 +264,7 @@ class:middle
 ```
 
 --
+
 * Because we are only in the realm of data this is safe. 
     - _*NOT*_ general recursion
     - Gives us a solid foundation.
@@ -271,8 +273,13 @@ class:middle
 
 ---
 
+background-image: url(img/nats-graph-scaled.png)
+
+---
+
 #Succ in STACC
 
+-
 * Nat -> Nat *too powerful* for the induction step
     - It could be adding two or never terminate
 
@@ -290,7 +297,8 @@ class:middle
 
 # Creating our own constraint
 
-* Let's create smaller than *<*
+* Let`s create smaller than `(<)`
+
 ```
     < = { a: Nat
           b: Nat

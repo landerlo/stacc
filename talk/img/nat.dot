@@ -1,0 +1,13 @@
+digraph Nat {
+edge [splines=curved]
+
+node [shape=circle]
+
+Z [label="{}"]
+
+Nat -> Succ 
+Nat -> Z
+Succ -> Z [label="pred"]
+
+1 -> Z [label="pred"]
+}

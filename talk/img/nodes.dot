@@ -1,0 +1,11 @@
+digraph TwoZero {
+edge [splines=curved]
+
+node [shape=circle]
+
+Z [label="{}"]
+
+2 -> 1 [label="pred"]
+
+1 -> Z [label="pred"]
+}

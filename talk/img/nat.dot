@@ -1,12 +1,14 @@
 digraph Nat {
-edge [splines=curved]
+splines=true
 
-node [shape=circle]
+edge [len = 4]
+
+node [shape=circle, width=1]
 
 Z [label="{}"]
 
-Nat -> Succ 
-Nat -> Z
-Succ -> Nat [label="pred"]
+Nat -> Succ [style = "dashed"]
+Nat -> Z [style = "dashed"]
+Succ -> Nat [label="pred", constraint=false]
 
 }

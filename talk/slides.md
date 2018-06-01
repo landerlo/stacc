@@ -1,6 +1,10 @@
 class: middle
 
-#Insert fancy front slide
+#STACC
+
+
+
+@landerlo
 
 ---
 class: top
@@ -259,14 +263,19 @@ class:middle
 
 #Construct our example in Stacc
 
-##We will need:
-### Numbers
-### smaller than
+## We will need:
 
-##Building blocks
-### Empty set {}
-### Predicates on Vars
-### Disjunction
+    - Numbers
+
+    - smaller than
+
+## Building blocks:
+
+    - Empty set {}
+
+    - Predicates on Vars
+
+    - Disjunction
 
 ---
 

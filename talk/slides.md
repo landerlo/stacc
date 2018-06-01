@@ -179,10 +179,6 @@ class: middle
 
 * Line between type and refinement or constraint blurred
 
---
-
-* Propositions as types!
-
 ---
 
 # Decidability
@@ -258,6 +254,19 @@ class:middle
 
 
 * We will have to build Naturals, smaller than and addition
+
+---
+
+#Construct our example in Stacc
+
+##We will need:
+### Numbers
+### smaller than
+
+##Building blocks
+### Empty set {}
+### Predicates on Vars
+### Disjunction
 
 ---
 

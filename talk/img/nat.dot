@@ -9,5 +9,4 @@ Nat -> Succ
 Nat -> Z
 Succ -> Nat [label="pred"]
 
-1 -> Z [label="pred"]
 }

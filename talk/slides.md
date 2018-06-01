@@ -3,13 +3,7 @@ class: middle
 #Insert fancy front slide
 
 ---
-
 class: top
-#WHO AM I
-
-...
-
----
 
 #STACC is 
 
@@ -114,6 +108,66 @@ Just as well your program should collapse.
 STATIC TYPING typechecker's job this doesn't happen at runtime
 
 ---
+#First contact
+
+```
+    natTuple = { a e Nat, b e Nat }
+
+    orderedTuple = natTuple u { a < b }
+
+    orderedTuple = {
+        a e Nat
+        b e Nat
+        a < b
+    }
+
+```
+
+---
+class: middle
+```
+    orderedTuple = {
+        a e Nat
+        b e Nat
+        a e (< b)
+    }
+
+```
+
+---
+#Propositions as types
+
+    `x e P <==> P(x)`
+
+* The values that hold for the predicate define the domain of the type
+
+* Nat and (< b) are predicates
+
+--
+
+* Nat and (< b) are types
+
+
+---
+#Union as application
+
+```
+  tuple bounded by 5 = orderedTuple u { b = 5 }
+```
+
+--
+
+```
+  tuple bounded by 5 = {
+        a e Nat
+        b e Nat
+        b = 5
+        a e (< 5)
+    }
+
+```
+
+---
 
 #Properties vs Booleans
 
@@ -202,13 +256,6 @@ class:middle
 
 ## We are missing composability at the type level
 
----
-
-#An example: safe factorial
-
-`safeFactorial: x: Nat, x < 20 => Nat`
-
---
 
 * We will have to build Naturals, smaller than and addition
 

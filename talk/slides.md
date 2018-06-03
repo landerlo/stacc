@@ -116,13 +116,13 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 #First contact
 
 ```
-    natTuple = { a e Nat, b e Nat }
+    natTuple = { a ∈ Nat, b ∈ Nat }
 
-    orderedTuple = natTuple u { a < b }
+    orderedTuple = natTuple ∪ { a < b }
 
     orderedTuple = {
-        a e Nat
-        b e Nat
+        a ∈ Nat
+        b ∈ Nat
         a < b
     }
 
@@ -132,9 +132,9 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 class: middle
 ```
     orderedTuple = {
-        a e Nat
-        b e Nat
-        a e (< b)
+        a ∈ Nat
+        b ∈ Nat
+        a ∈ (< b)
     }
 
 ```
@@ -142,7 +142,7 @@ class: middle
 ---
 #Propositions as types
 
-    `x e P <==> P(x)`
+    `x ∈ P <==> P(x)`
 
 * The values that hold for the predicate define the domain of the type
 
@@ -157,17 +157,17 @@ class: middle
 #Union as application
 
 ```
-  tuple bounded by 5 = orderedTuple u { b = 5 }
+  tuple bounded by 5 = orderedTuple ∪ { b = 5 }
 ```
 
 --
 
 ```
   tuple bounded by 5 = {
-        a e Nat
-        b e Nat
+        a ∈ Nat
+        b ∈ Nat
         b = 5
-        a e (< 5)
+        a ∈ (< 5)
     }
 
 ```
@@ -336,13 +336,15 @@ class:middle
 
 ---
 
-background-image: url(img/nats-graph-scaled.png)
+.left-column[ ![](./img/nat.png)]
+
+.right-column[![](./img/list.png)]
+
 
 ---
 
 #Succ in STACC
 
--
 * Nat -> Nat *too powerful* for the induction step
     - It could be adding two or never terminate
 
@@ -362,7 +364,7 @@ background-image: url(img/nats-graph-scaled.png)
 
 * Let's create smaller than
 
-```
+```sh
     < = { a: Nat
           b: Nat
 
@@ -398,8 +400,8 @@ class:middle
 ```sh
 {
 
-T ∈  Set
-a ∈ T
+    T ∈  Set
+    a ∈ T
 }
 ```
 
@@ -410,28 +412,75 @@ a ∈ T
 ```sh
 {
     List  = {} | Cons
-    Cons = { pred: List
-             x: T
-             T e Set 
+    Cons = { pred ∈ List
+             elem ∈ T
+             T    ∈ Set }
 }
 `
 ```
 
 ---
 
-background-image: url(img/nats-lists.png)
+#Nat List adjoint
+
+.left-column[ ![](./img/nat.png)]
+
+.right-column[![](./img/list.png)]
 
 ---
 
-# Nat List equivalence
+# Subtyping 
 
 ```sh
-{
-    aList e List
-    foo = { x e Nat }
+isSize = {
+    size ∈ Nat
+    list ∈ List
 
-    foo u { x = aList } 
+    list = size
 }
+```
+--
+
+```sh
+isSize ∪ {
+    a = { pred = { pred = {} } }
+    b = { 
+
+        T = String
+        elem = "foo" }
+        pred = {
+            T = String
+            elem = "bar"
+            pred = {}
+        }
+}
+```
+
+---
+
+.right-column[```sh
+{
+    res = {
+        x ∈ Nat
+        x = { 
+
+    foo = { 
+        x ∈ Nat 
+        x = alist
+}
+
+    foo ∪ { x = aList } 
+}
+```
+]
+--
+
+.left-column[ ![](./img/nat.png)
+]
+
+.right-column[
+![](./img/list.png)
+]
 
 ???
 
@@ -441,15 +490,15 @@ this is using size
 
 # Higher ranks
 
-* We achieve higher ranks by introducing chained membership relations
+* Chained membership relationships result in higher ranks
 
 ```sh
 {
 
-U ∈  Set
-T ∈  U
+    U ∈  Set
+    T ∈  U
 
-a ∈ T
+    a ∈ T
 }
 ```
 
@@ -469,7 +518,9 @@ id = {
 * We apply the set property same as any other value
 
 ```sh
-idNat = id u { T = Nat }
+
+idNat = id ∪ { T = Nat }
+
 idNat = {
     T ∈ Set
     x ∈ T 

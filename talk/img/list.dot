@@ -1,0 +1,15 @@
+digraph List {
+splines=true
+
+edge [len = 4]
+
+node [shape=circle, width=1]
+
+Nil [label=<<b>{}</b>>, labelfontcolor=red]
+
+List -> Cons [style = "dashed"]
+List -> Nil [style = "dashed"]
+Cons -> List [label="pred", constraint=false, labelfontcolor="red"]
+Cons -> T [label="x", constraint=false, labelfontcolor="red"]
+
+}

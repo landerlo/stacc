@@ -2,9 +2,10 @@ class: middle
 
 #STACC
 
+???
 
+Image of the staccs
 
-@landerlo
 
 ---
 class: top
@@ -256,9 +257,6 @@ class:middle
 
 ## We are missing composability at the type level
 
-
-* We will have to build Naturals, smaller than and addition
-
 ---
 
 #Construct our example in Stacc
@@ -390,30 +388,6 @@ class:middle
 
 ---
 
-# FUNCTIONS
-
-* e.g. Addition
-```sh
-add = {
-  a: Nat
-  b: Nat
-
-  => 
-     | {},     if a = {}, b = {}
-     | b,      if a = {}
-     | a,      if b = {}
-     | self u { 
-          a = Succ u { pred = a}
-          b = b.pred 
-        },     if a /= {} & b /= {}
-}
-```
-
-???
-
-
----
-
 # Parametricity
 
 * A variable has a membership constrain on another variable which is a Set
@@ -425,6 +399,56 @@ add = {
 {
 
 T ∈  Set
+a ∈ T
+}
+```
+
+---
+
+# Lists
+
+```sh
+{
+    List  = {} | Cons
+    Cons = { pred: List
+             x: T
+             T e Set 
+}
+`
+```
+
+---
+
+background-image: url(img/nats-lists.png)
+
+---
+
+# Nat List equivalence
+
+```sh
+{
+    aList e List
+    foo = { x e Nat }
+
+    foo u { x = aList } 
+}
+
+???
+
+this is using size
+
+---
+
+# Higher ranks
+
+* We achieve higher ranks by introducing chained membership relations
+
+```sh
+{
+
+U ∈  Set
+T ∈  U
+
 a ∈ T
 }
 ```

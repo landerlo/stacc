@@ -1,0 +1,18 @@
+digraph TwoZero {
+edge [splines=curved]
+
+node [shape=circle]
+
+foo [label = "" style="bold,filled"]
+bar [label = "" style="bold,filled"]
+Nil [label="{}" style="bold,filled"]
+fooS [label = "foo"]
+barS [label = "bar"]
+
+
+foo -> fooS [label="elem"]
+foo -> bar [label="pred"]
+
+bar -> barS [label="elem"]
+bar -> Nil [label="pred"]
+}

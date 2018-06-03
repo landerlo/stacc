@@ -115,26 +115,15 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 ---
 #First contact
 
-```
+```sh
     natTuple = { a ∈ Nat, b ∈ Nat }
 
-    orderedTuple = natTuple ∪ { a < b }
+    orderedTuple = natTuple ∪ { a ∈ (< b) }
 
     orderedTuple = {
         a ∈ Nat
         b ∈ Nat
-        a < b
-    }
-
-```
-
----
-class: middle
-```
-    orderedTuple = {
-        a ∈ Nat
-        b ∈ Nat
-        a ∈ (< b)
+        a ∈ (< b)      // a < b
     }
 
 ```
@@ -142,7 +131,7 @@ class: middle
 ---
 #Propositions as types
 
-    `x ∈ P <==> P(x)`
+##x ∈ P ⇔ P(x)
 
 * The values that hold for the predicate define the domain of the type
 
@@ -155,34 +144,38 @@ class: middle
 
 ---
 #Union as application
+```sh
+  orderedTuple = {
+        a ∈ Nat
+        b ∈ Nat
+        a ∈ (< b)
+  }
 
-```
-  tuple bounded by 5 = orderedTuple ∪ { b = 5 }
+  `bounded by 5` = orderedTuple ∪ { b = 5 }
 ```
 
 --
 
-```
-  tuple bounded by 5 = {
+```sh
+  `bounded by 5` = {
         a ∈ Nat
         b ∈ Nat
         b = 5
         a ∈ (< 5)
-    }
+  }
 
 ```
 
 ---
-
 #Properties vs Booleans
 
 * Commonly logic and properties represented as booleans
 
-    - Boolean blindness
+    - Boolean blindness issue
 
 * We want predicates enforceable by compiler
 
-* Line between type and refinement or constraint blurred
+* Line between type and refinement blurred
 
 ---
 
@@ -217,14 +210,16 @@ class: middle
    - division:   Double => Double
 
 ---
-class: middle
 # Demand Totality
 
+.middle[
 ## We should push up optionality to the caller
 
-* i.e squareRoot: NonNegativeDouble => NonNegativeDouble
+`squareRoot: NonNegativeDouble => NonNegativeDouble`
 
-* Usually achieved with newtypes
+## Usually achieved with **newtypes**
+]
+
 ???
 
 ---
@@ -308,7 +303,7 @@ class:middle
 
 * Let's try:
 
-```
+```sh
    Nat = {} | Succ
 
    Succ = ???
@@ -321,24 +316,26 @@ class:middle
 * References to create induction
     - References to structures in the tree gives us recursion
 
-```
+```sh
     Nat = {} | Succ
     Succ = { pred: Nat }
 ```
 
 --
 
-* Because we are only in the realm of data this is safe.
-    - _*NOT*_ general recursion
+* Because we are only in the realm of data this is safe
+
+    - Structural recursion
+
     - Gives us a solid foundation.
 
 ???
 
 ---
-
+#Nats and two
 .left-column[ ![](./img/nat.png)]
 
-.right-column[![](./img/list.png)]
+.right-column[![](./img/two-one-zero.png)]
 
 
 ---
@@ -373,10 +370,10 @@ class:middle
              | a.pred < b.pred  if  b /= {}, a /= {}
     }
 ```
-* In the second clause we introduce Absurdity.
+* In the second clause we introduce __absurdity ⊥__
 
-* All the paths in the disjunction must be disjoint, i.e. no overlap.
-
+* All the paths in the disjunction must be disjoint
+    - i.e. no overlap.
     - More principled than the usual fall through case statements
 
 ---
@@ -432,54 +429,53 @@ class:middle
 # Subtyping 
 
 ```sh
-isSize = {
-    size ∈ Nat
-    list ∈ List
-
-    list = size
+equalNats = { 
+      a ∈ Nat
+      b ∈ Nat
+      a = b
 }
 ```
 --
 
 ```sh
-isSize ∪ {
-    a = { pred = { pred = {} } }
-    b = { 
-
-        T = String
-        elem = "foo" }
-        pred = {
-            T = String
-            elem = "bar"
-            pred = {}
-        }
+listOfSize = { 
+      size ∈ Nat
+      list ∈ List
+      
+      equalNats ∪ {
+        a = size
+        b = list
+      }
 }
 ```
 
 ---
 
-.right-column[```sh
-{
-    res = {
-        x ∈ Nat
-        x = { 
+.left-column[
+```sh
+listOfSize ∪ {
+  size = {
+      pred = {
+          pred = {}
+      }
+  }
 
-    foo = { 
-        x ∈ Nat 
-        x = alist
-}
-
-    foo ∪ { x = aList } 
+  list = {
+    T = String
+    elem = "foo" }
+    pred = {
+        T = String
+        elem = "bar"
+        pred = {}
+    }
 }
 ```
 ]
---
-
-.left-column[ ![](./img/nat.png)
-]
 
 .right-column[
-![](./img/list.png)
+<img style="height:17%; width:17%" src="./img/two-one-zero-noref.png" >
+</br>
+<img style="height:45%; width:45%" src="./img/foobar.png">
 ]
 
 ???
@@ -535,7 +531,6 @@ idNat = {
 
 # Thank you
 
-
 * Demand ad-hoc constraints
 
 --
@@ -545,5 +540,8 @@ idNat = {
 --
 
 * Stack your blocks and build types
-
+</br>
+</br>
+</br>
+<p class="blue center"><b>@landerlo</b></p>
 

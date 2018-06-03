@@ -71,8 +71,8 @@ As an FP practitioner outside academia I've found this wide gap
 
 # Algebraic
 
-* LC has application and product
-    - lambda x. xyz
+* Lambda Calculus has application and product
+    - λx. xyz
 
 * STACC has application, product and coproduct
 
@@ -543,5 +543,6 @@ idNat = {
 </br>
 </br>
 </br>
+<p class="github center"><b>https://github.com/landerlo/stacc</b></p>
 <p class="blue center"><b>@landerlo</b></p>
 

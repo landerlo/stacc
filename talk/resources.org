@@ -1,3 +1,0 @@
-
-* Naive type theory - Thorsten Altenkirch
-   

@@ -152,6 +152,7 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
   }
 
   `bounded by 5` = orderedTuple ∪ { b = 5 }
+
 ```
 
 --
@@ -167,6 +168,36 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 ```
 
 ---
+#Asserting the unknown
+
+y: Nat
+
+t = 'bounded by 5' u { a = y }
+
+---
+#Asserting the unknown
+
+y: Nat
+
+~~t = 'bounded by 5' u { a = y }~~
+
+---
+#Coproduct to the rescue
+
+```sh
+{
+    y: Nat
+
+    bb5 = `bounded by 5` 
+
+    t = | bb5 u { a = y }   if y < bb5.b
+        |
+        | bb5 u { a = 5 }   otherwise
+}
+```
+
+---
+
 #Properties vs Booleans
 
 * Commonly logic and properties represented as booleans
@@ -202,25 +233,32 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 --
 
 * The hidden surprise
+
     - squareRoot: Double => Double
 
 --
 
-* Non total functions abound
-   - division:   Double => Double
+* We should push up optionality to the caller
+
+   - squareRoot: NonNegativeDouble => NonNegativeDouble
+
+--
+
+* Usually achieved with **newtypes**
 
 ---
-# Demand Totality
 
-.middle[
-## We should push up optionality to the caller
+#Totality is only part of the solution
 
-`squareRoot: NonNegativeDouble => NonNegativeDouble`
+* Implicit invariants have a cognitive cost
 
-## Usually achieved with **newtypes**
-]
+   - getInvoices: [Order] -> [Invoice]
 
-???
+--
+
+* Make the invariant __explicit__
+
+   - getInvoice: (o: Order, Fullfilled(o)) -> Invoice
 
 ---
 
@@ -539,7 +577,7 @@ idNat = {
 
 --
 
-* Stack your blocks and build types
+* Stack your blocks and construct types
 </br>
 </br>
 </br>

@@ -172,15 +172,27 @@ STATIC TYPING typechecker's job this doesn't happen at runtime
 
 y: Nat
 
-t = 'bounded by 5' u { a = y }
+t = 'bounded by 5' ∪ { a = y }
 
 ---
 #Asserting the unknown
 
 y: Nat
 
-~~t = 'bounded by 5' u { a = y }~~
+~~t = 'bounded by 5' ∪ { a = y }~~
 
+--
+
+```sh
+  `bounded by 5` = {
+        a ∈ Nat
+        b ∈ Nat
+        b = 5
+        a ∈ (< 5)
+        a = y
+  }
+
+```
 ---
 #Coproduct to the rescue
 
@@ -190,9 +202,9 @@ y: Nat
 
     bb5 = `bounded by 5` 
 
-    t = | bb5 u { a = y }   if y < bb5.b
+    t = | bb5 ∪ { a = y }   if y < bb5.b
         |
-        | bb5 u { a = 5 }   otherwise
+        | bb5 ∪ { a = 1 }   otherwise
 }
 ```
 
@@ -343,7 +355,10 @@ class:middle
 
 ```sh
    Nat = {} | Succ
+```
+--
 
+```sh
    Succ = ???
 ```
 
@@ -421,16 +436,15 @@ class:middle
 
 ???
 
-  Paraphrasing the famous FP quote from bananas &  & barbed wire
+Paraphrasing Functional Programming with Bananas, Lenses, Envelopes and Barbed Wire
 
 ---
 
 # Parametricity
 
-* A variable has a membership constrain on another variable which is a Set
+* A variable has a membership constraint on another variable which is a Set
 
 * No different semantics than other values
-    - You can compare assign, copy, etc.
 
 ```sh
 {
@@ -439,7 +453,9 @@ class:middle
     a ∈ T
 }
 ```
+???
 
+Should be 40 MINUTES
 ---
 
 # Lists

@@ -1,0 +1,14 @@
+digraph Nat {
+splines=true
+
+edge [len = 4]
+
+node [shape=circle, width=1]
+
+Z [label="{}"]
+
+Nat -> Succ [style = "dashed"]
+Nat -> Z [style = "dashed"]
+Succ -> Nat [label="pred", constraint=false]
+
+}

@@ -1,0 +1,253 @@
+* STACC Alternative interpretation of type theory
+
+* Who Am i
+
+* Warning will be exposed to some content not approved
+
+* Work in progress.
+
+/IMG worker
+   show proress, 
+   still in progress
+   feedback criticism always welcome.
+
+* Motivation
+    Explore a very simple theory, notation and semantics rooted in classical mathematics and approchable
+
+    Simple not familiar? Posssiblya
+
+    Unification of advanced concepts
+
+* More motivation...
+  Thinks I find lacking in current languages:
+   ** Leaky, non orthogonal first class:
+      - objects, modules, classes, records, types. Many different names for things that seem "the same" 
+but have slightly different semantics.
+   
+   ** Hierarchical nature and subtyping and variance. Every opt ins is an opportunity for a leak and a red flag for unprincipledness.
+   With optionality makes reasoning difficult.      
+
+   ** What's in a name. reliance on naming. opposed to constrution. the something has one type vs something can meet the properties of different types
+   not x is type A but x can be checked against type A <- constructivism. Types more semantically powerful
+   we have the concept of equality of values, but not equality of types
+   ie a = 5, b = 5  a = b. It doesn't happen with types. data A = Apple | Orange.  data B = Apple | Orange a:A = (Orange: A) != (Orange: B)
+
+
+   ** Lack of function application abstraction. here goes the explanation about free interpreters etc.
+       
+   What I  want... very few unified building blocks with simple semanrtics.
+   
+   To achieve the capabilities I won't compromise on a PL:
+   Parametricity
+   Refinement, dependant and decidable types
+   Subtyping as an expression of hierarchies, modules, etc.
+   
+
+* Not based on lambda calculus.
+   - Some slide here explaining this can probably be encoded as lambda calculus
+
+* Explore duals of lambda calculus
+*STACC
+** Set theoretic / Structural?
+
+** Algebraic:
+   Includes the coproduct also as well as product
+    Lambda calculus is function application and product
+    Stacc has application product and coproduct
+
+
+** Constructive
+
+
+* What is a function?
+   * We teach the analogy of the processing unit, the object in the conveyor belt being transformd int something else
+
+    /IMG x into processing unit into an X
+
+   * A relation, morphism between sets, a set or morphism between objects
+    /IMG 
+    
+    Could this be seen as an object. Pure data a product between an object and the "operation"?
+
+* While LC uses a function centric approach, STACC is data centric
+
+* handwavy 
+
+tuple = { a: Nat, b: Nat }
+
+add = tuple u { z = a + b }
+
+res = add u { a= 1, b = 2 }
+
+/IMG the graphs based on sets and what each field is pointing to.
+
+{ a: Nat
+  a = 1
+  b: Nat
+  b = 2
+  res = a + b
+}
+
+* we have variable depending in other variable in the set.
+
+res.z = ...
+
+* Data is when there are no such dependencies
+
+city = {
+   state: String
+   city : String
+}
+
+boulder = city u {
+   state = CO
+   city = Boulder
+}
+
+* But we can also partially apply data
+
+`colorado city` = city u { state = CO }
+
+** Partially applying data structures.
+
+  -- We see there is no difference between the two
+
+  -- We can see that function application is union
+
+* Unit / Identity is {}
+
+* In STACC the function data distinction will be imposed by convention and other analysis rules, it's not fundamental at the core theory.
+
+
+* As opposed to standard type theory languages STACC abstract function application. As it is data it is reified and can be inspected
+   In FP application is not abstraction. Application is opaque, not reified. i.e. once you apply the f there is no way of matching on the application.
+
+    That's where Free, Interpreters and all the techniques of refifying computation come in
+    
+    Provide reification for function application
+        - Function application is abstracted, we can intronspect and replace "application". Though this abstraction is not first class and needs to be
+provided by the reification -"datification" of them. 
+    
+    My main issue with current FP, first class in next languages? -Make sure check Idris or Agda don't allow them    
+
+* e.g. 
+val onePlusTwo = { a: Nat
+  a = 1
+  b: Nat
+  b = 2
+  res = /* a + b/3 */
+}
+We can project the parameters to the application
+
+* We see that in STACC we follow the opposite path
+    Everything is reified, so any language on top of Stacc would have to erase aggresively all the encodings of function application as data 
+
+   --  To be usable with a familiar FP language all the encoding of function will need to be erased on application
+
+
+* An AST is a tree
+   Really it is a DAG because we have references. Recursive definitions
+i
+
+{ a: Nat
+  b: Nat
+  z = /* a + b */
+}
+
+* Show example
+   Nat = { pres: Nat }
+
+    
+* Static vies of function application 
+
+{ 
+   a: Nat
+
+   c: a
+}
+
+* Components of STACC
+   Sets of predicates on variables:
+
+   the only terminal object is {}
+   then there are variables, or labels
+ 
+   built in predicates are equality and membership
+
+   There is canonical equality.
+
+     {
+       a = {}
+    
+       b = {}
+
+       b = a
+     }
+
+   {
+      a = { z = {} }
+     
+      b = { z = {} }
+
+      a = b
+
+   }
+
+
+   {
+      a = { z = {} }
+     
+      b = { y = {} }
+
+      a = b
+
+   } // FAIL
+
+* Membership
+   - A predicate creates a set of values
+
+    a e P,  is the same as P(a) in logic
+
+* One builin Predicate
+   INSET
+
+
+
+* Structural
+  Outer names do not matter
+
+::: Recursivity to mame types more interesting ??? inductivity
+
+::: Introduce Nat
+
+Nat = Succ | {}
+Succ = { pred: Nat }
+
+zero = {}
+one  = Succ u { pred = {} } // one = { pred = {} } equivalent:
+
+both are members of Nat, despite construction is different:
+a) { 
+       pred: Nat
+       pred = {}
+}   vs { pred = {} }
+
+both are equivalent under unification / canonicity, as pred: Nat is redundant as soon as we have pred with value {}
+pred: Nat is subsumed in the information that pred = {}
+
+Constructivism, local reasoning on overload. We don't need the lineage of the object to check it's properties. 
+
+--- bbbeeee Lineage is important to remember proofs? but they can be carried, so the lineage is not fundamental ---
+
+
+
+
+::: Convert into a list  
+
+::: Introduce polimorphism
+   
+::: dependant typing
+
+     
+* The duality of property and type 
+ 

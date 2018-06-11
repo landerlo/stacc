@@ -1,4 +1,4 @@
-package stacc.naming
+package stacc.resolution
 
 import org.scalatest.FreeSpec
 import stacc.ast._

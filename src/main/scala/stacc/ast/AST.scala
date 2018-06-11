@@ -10,9 +10,10 @@ object Ref {
   def apply(path: String): Ref = Ref(Path(path))
 }
 
-trait PSet
-
+sealed trait PSet
 case object SET extends PSet
+case object ASET extends PSet
+case class Union(a: Ref \/ PSet, b: Ref \/ PSet) extends PSet
 
 object PSet {
   def apply(vs: Set[PropOnVar]): PSet = ConcPSet(vs)
@@ -23,8 +24,6 @@ object PSet {
   val empty = ConcPSet(Set[PropOnVar]())
   val Ø = empty
 }
-
-
 
 case class PropOnVar(v: Var, p: Prop)
 

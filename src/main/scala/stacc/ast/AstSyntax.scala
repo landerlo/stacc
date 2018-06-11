@@ -20,10 +20,16 @@ object AstSyntax {
     override val v: Var = vv
   }
 
-  implicit def symbolOpSyntax(s: Symbol): OpsOnVar = new OpsOnVar {
+  implicit def symbolOpValueSyntax(s: Symbol): OpsOnValue = new OpsOnValue {
+    override val lhs: Ref \/ PSet = -\/(Ref(s.name))
+  }
+  implicit def symbolOpVarSyntax(s: Symbol): OpsOnVar = new OpsOnVar {
     override val v: Var = Var(s.name)
   }
 
+  implicit def psetOpValueSyntax(pset: PSet): OpsOnValue = new OpsOnValue {
+    override val lhs: Ref \/ PSet = \/-(pset)
+  }
 
   trait OpsOnVar {
     val v: Var
@@ -36,8 +42,17 @@ object AstSyntax {
     def ee(ps: PSet)  = PropOnVar(Var(v.name),  MemberOf(\/-(ps)))
     def ee(ref: Ref)  = PropOnVar(Var(v.name),  MemberOf(-\/(ref)))
     def ee(s: Ref \/ PSet)  = PropOnVar(Var(v.name),  MemberOf(s))
-  }
 
+   }
+
+  trait OpsOnValue {
+    val lhs: Ref \/ PSet
+
+    def u(s: Symbol) = Union(lhs,  -\/(Ref(Path(s.name))))
+    def u(ps: PSet)  = Union(lhs,  \/-(ps))
+    def u(ref: Ref)  = Union(lhs,  -\/(ref))
+    def u(rhs: Ref \/ PSet)  = Union(lhs, rhs)
+  }
 
   implicit class ElemOps(e: PSet) {
  //  def U(other: PSet): PropUnion = PropUnion(e, other)

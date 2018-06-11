@@ -7,6 +7,7 @@ trait Lie
 case class LyingPropOnVar(lie: PropOnVar) extends Lie
 case class LyingProp(lie: Prop) extends Lie
 case class LyingLogicPred(lie: LogicPred) extends Lie
+case object SETCanBeUnioned extends Lie
 
 object Lie {
   def apply(p: Prop): Lie = LyingProp(p)
@@ -17,7 +18,6 @@ object Lie {
 trait Ev[A]
 case class Top[A](a: A) extends Ev[A]
 case class Bottom[A](lie: Lie) extends Ev[A]
-case class Canon[A](a: A) extends Ev[A]
 
 object Ev {
 

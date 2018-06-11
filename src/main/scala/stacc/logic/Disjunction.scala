@@ -1,15 +1,15 @@
 package stacc.logic
 
-import stacc.ast.PSet
+import stacc.ast.{PSet, Prop}
 
 class Disjunction {
 
 }
 
 
-case class Disj(cases: Seq[Case])
 
-case class Case(cond: PSet, value: PSet)
+
+
 
 
 

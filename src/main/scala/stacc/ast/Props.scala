@@ -5,12 +5,19 @@ import scalaz.{IList, INil, Order, \/, NonEmptyList => NEL}
 import stacc.logic._
 import stacc.logic.Ev._
 import scalaz._
+import stacc.ast.CondEquals.Case
 import stacc.ast.PSet.ConcPSet
 import std.list._
 import syntax.traverse._
+
 sealed trait Prop
-case class Equals(target: Ref \/ PSet) extends Prop
+case class Equals(target: Ref \/ PSet)   extends Prop
+case class CondEquals(cases: Seq[Case])  extends Prop
 case class MemberOf(target: Ref \/ PSet) extends Prop
+
+object CondEquals {
+  case class Case(cond: PSet, target: Ref \/ PSet)
+}
 
 /*
   These predicates are not in the predicates on var of the calulus,
@@ -38,7 +45,6 @@ case class Congruent(a: ConcPSet, b: ConcPSet) extends LogicPred {
     val notInIntersection = (pset: ConcPSet) => pset.vs.filter(pov => !intersection.contains(pov.v))
 
     congruentShared.map(cong => PSet(cong.toList.toSet ++ notInIntersection(a) ++ notInIntersection(b)))
-
   }
 }
 

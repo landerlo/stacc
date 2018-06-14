@@ -24,8 +24,15 @@ object Resolve {
           val nextTarget: Ev[Ref \/ PSet] = projected.flatMap(unify(resolve(root))).flatMap(domain)
           val rr =nextTarget.flatMap(resolvePath(restPath)(root))
           rr
-        case (lastName, None) => project(Var(lastName))(pset).flatMap(unify(resolve(root)))
-      }
+        case (lastName, None) =>
+          val projected = project(Var(lastName))(pset)
+          val nextTarget: Ev[Ref \/ PSet] = projected.flatMap(unify(resolve(root))).flatMap(domain)
+
+          nextTarget.flatMap {
+            case \/-(p: PSet) => Top(Equals(\/-(p)))
+            case -\/(r: Ref) => resolve(root)(-\/(r))
+          }
+       }
     case -\/(ref) =>
       for {
         resolvedRef <- resolve(root)(-\/(ref))

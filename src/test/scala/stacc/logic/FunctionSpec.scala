@@ -1,7 +1,7 @@
 package stacc.logic
 
 import org.scalatest.FreeSpec
-import scalaz.-\/
+import scalaz.{-\/, \/-}
 import stacc.ast._
 import stacc.ast.AstSyntax._
 
@@ -10,7 +10,7 @@ class FunctionSpec extends FreeSpec {
   "Functions" - {
     val tup = PSet('T ee SET, 'first ee 'T, 'second ee 'T)
     "first" in {
-      assert { Resolve.resolve(tup)(-\/(Ref("first"))) === Top(MemberOf(-\/(Ref("T")))) }
+      assert { Resolve.resolve(tup)(-\/(Ref("first"))) === Top(MemberOf(\/-(A_SET))) }
     }
 
     "target" in {

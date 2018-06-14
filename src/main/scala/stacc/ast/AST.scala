@@ -12,7 +12,7 @@ object Ref {
 
 sealed trait PSet
 case object SET extends PSet
-case object ASET extends PSet
+case object A_SET extends PSet
 case class Union(a: Ref \/ PSet, b: Ref \/ PSet) extends PSet
 
 object PSet {

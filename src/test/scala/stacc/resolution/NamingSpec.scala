@@ -30,11 +30,11 @@ class NamingSpec extends FreeSpec {
       assert { resolve(PSet(A, B))(-\/(Ref("A.a"))) === Top(:=(empty)) }
 
     }
-    "Successful reference out of order" in assert {
+    "Successful reference out of order" in {
       val B = 'B := Ref(Path("A.a"))
       val A = 'A := PSet('a := empty)
 
-      resolve(PSet(B, A))(-\/(Ref("B"))) === Top(:=(Ref("A.a")))
+      assert { resolve(PSet(B, A))(-\/(Ref("B"))) === Top(:=(empty)) }
     }
 
     "Chained references" in {
@@ -43,7 +43,7 @@ class NamingSpec extends FreeSpec {
       val B = 'B := Ref(Path("A"))
       val C = 'C := empty
 
-      assert { resolve(PSet(A, B, C))(-\/(Ref("B.a"))) === Top(:=(Ref("C"))) }
+      assert { resolve(PSet(A, B, C))(-\/(Ref("B.a"))) === Top(:=(empty)) }
 
     }
 

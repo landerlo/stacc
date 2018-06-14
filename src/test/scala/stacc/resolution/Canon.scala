@@ -28,13 +28,13 @@ object Canon {
    case Union(-\/(refA), -\/(refB)) => ???
    case Union(\/-(Union(a, b)), \/-(Union(c, d)))=> ???
 
-   case a @ Union(\/-(ASET), _) => Top(a)
-   case a @ Union(_, \/-(ASET)) => Top(a)
+   case a @ Union(\/-(A_SET), _) => Top(a)
+   case a @ Union(_, \/-(A_SET)) => Top(a)
 
    case Union(\/-(SET), _) => Bottom(SETCanBeUnioned)
    case Union(_, \/-(SET)) => Bottom(SETCanBeUnioned)
 
-   case ASET => Top(ASET)
+   case A_SET => Top(A_SET)
    case SET => Top(SET)
   }
  }

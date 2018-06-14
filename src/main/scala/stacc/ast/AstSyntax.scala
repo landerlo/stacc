@@ -4,13 +4,13 @@ import stacc.ast._
 
 object AstSyntax {
 
-  def :=(ps: PSet):  Equals[PSet] = Equals(ps)
+  def :=(ps: PSet):  Equals[Ref \/ PSet] = Equals(\/-(ps))
   def :=(s: Symbol): Equals[Ref \/ PSet] = Equals(-\/(Ref(Path(s.name))))
-  def :=(ref: Ref):  Equals[Ref] = Equals(ref)
+  def :=(ref: Ref):  Equals[Ref \/ PSet] = Equals(-\/(ref))
 
-  def ee(ps: PSet):  MemberOf[PSet] = MemberOf(ps)
-  def ee(s: Symbol): MemberOf[Ref] = MemberOf(Ref(Path(s.name)))
-  def ee(ref: Ref):  MemberOf[Ref] = MemberOf(ref)
+  def ee(ps: PSet):  MemberOf[Ref \/ PSet] = MemberOf(\/-(ps))
+  def ee(s: Symbol): MemberOf[Ref \/ PSet] = MemberOf(-\/(Ref(Path(s.name))))
+  def ee(ref: Ref):  MemberOf[Ref \/ PSet] = MemberOf(-\/(ref))
   def ee(psOrRef: Ref \/ PSet):  MemberOf[Ref \/ PSet] = MemberOf(psOrRef)
 
   implicit def idToVar(id: Symbol): Var = Var(id.name)
@@ -34,14 +34,14 @@ object AstSyntax {
   trait OpsOnVar {
     val v: Var
 
-    def :=(b: Symbol) = PropOnVar(Var(v.name), Equals(-\/(Ref(Path(b.name)))))
-    def :=(b: PSet)  = PropOnVar(Var(v.name),  Equals(\/-(b)))
-    def :=(b: Ref)  = PropOnVar(Var(v.name),  Equals(-\/(b)))
+    def :=(b: Symbol) = PropOnVar[Ref \/ PSet](Var(v.name), Equals(-\/(Ref(Path(b.name)))))
+    def :=(b: PSet)  =  PropOnVar[Ref \/ PSet](Var(v.name),  Equals(\/-(b)))
+    def :=(b: Ref)  =   PropOnVar[Ref \/ PSet](Var(v.name),  Equals(-\/(b)))
 
-    def ee(s: Symbol) = PropOnVar(Var(v.name),  MemberOf(-\/(Ref(Path(s.name)))))
-    def ee(ps: PSet)  = PropOnVar(Var(v.name),  MemberOf(\/-(ps)))
-    def ee(ref: Ref)  = PropOnVar(Var(v.name),  MemberOf(-\/(ref)))
-    def ee(s: Ref \/ PSet)  = PropOnVar(Var(v.name),  MemberOf(s))
+    def ee(s: Symbol) = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(-\/(Ref(Path(s.name)))))
+    def ee(ps: PSet)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(\/-(ps)))
+    def ee(ref: Ref)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(-\/(ref)))
+    def ee(s: Ref \/ PSet)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(s))
 
    }
 

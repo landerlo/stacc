@@ -11,7 +11,7 @@ import stacc.math.domain
 
 object Canon {
 
- def canonical(resolve: Ref \/ PSet => Ev[Prop])(ev: PSet): Ev[PSet] = {
+ def canonical(resolve: Ref \/ PSet => Ev[Prop[PSet]])(ev: PSet): Ev[PSet] = {
   ev match {
    case ConcPSet(pset) => ???
 

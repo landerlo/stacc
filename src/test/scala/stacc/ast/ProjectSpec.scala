@@ -27,7 +27,7 @@ class ProjectSpec extends FreeSpec {
         project('z)(ps) === Bottom(Lie('z ee (ps)))
       }
 
-      val x: Ev[NEL[Equals]] = implicitly[Monad[Ev]].point(NEL(:=(Ø)))
+      val x = implicitly[Monad[Ev]].point(NEL(:=(Ø)))
 
       val z: Ev[IList[String]] = IList("a", "b", "E").point[Ev]
       val xx: IList[Ev[Int]] = IList(Top(1), Top(2))

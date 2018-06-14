@@ -25,8 +25,8 @@ object Unification {
   }
 
   def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(a: Prop[PSet], b: Prop[PSet]): Ev[Prop[PSet]] = (a, b) match {
-    case (MemberOf(as: ConcPSet), MemberOf(bs: ConcPSet)) => Congruent(as, bs).eval(resolve).map(p => ee(p))
-    case (Equals(as: PSet), Equals(bs: PSet)) => Equal(as, bs).eval.map(p => :=(p))
+    case (MemberOf(as: ConcPSet), MemberOf(bs: ConcPSet)) => Congruent(as, bs).eval(resolve).map(p => MemberOf(p))
+    case (Equals(as: PSet), Equals(bs: PSet)) => Equal(as, bs).eval.map(p => Equals(p))
     case (_, _) => ???
   }
 

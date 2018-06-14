@@ -16,7 +16,7 @@ class UnionSpec extends FreeSpec {
       (A u B) === Union(\/-(A), \/-(B))
     }
     "Canonical union of sets of properties" in assert {
-      canonical(v => Top(Equals(v)))(A u B) === Top(PSet('a := empty, 'b := empty))
+      canonical(_ => ???)(A u B) === Top(PSet('a := empty, 'b := empty))
     }
 
 

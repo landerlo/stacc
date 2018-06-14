@@ -12,15 +12,21 @@ import stacc.math.domain
 
 object Unification {
 
-  def unify(resolve: (Ref \/ PSet) => Ev[Prop])(ps: NEL[Prop]): Ev[Prop] = {
-    ps.tail.foldLeft[Ev[Prop]](Top(ps.head)) {
-      case (ev, b) => ev.flatMap(a => unifyProps(resolve)(a, b))
+  def unify(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(ps: NEL[Prop[Ref \/ PSet]]): Ev[Prop[PSet]] = {
+    ps.tail.foldLeft[Ev[Prop[PSet]]](domain(ps.head).flatMap(resolve)) {
+      case (ev, b) =>
+        for {
+          domB <- domain(b)
+          rb <- resolve(domB)
+          rev <- ev
+          unified <- unifyProps(resolve)(rev, rb)
+        } yield unified
     }
   }
 
-  def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop])(a: Prop, b: Prop): Ev[Prop] = (a, b) match {
-    case (MemberOf(\/-(as: ConcPSet)), MemberOf(\/-(bs: ConcPSet))) => Congruent(as, bs).eval(resolve).map(p => ee(p))
-    case (Equals(\/-(as: PSet)), Equals(\/-(bs: PSet))) => Equal(as, bs).eval.map(p => :=(p))
+  def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(a: Prop[PSet], b: Prop[PSet]): Ev[Prop[PSet]] = (a, b) match {
+    case (MemberOf(as: ConcPSet), MemberOf(bs: ConcPSet)) => Congruent(as, bs).eval(resolve).map(p => ee(p))
+    case (Equals(as: PSet), Equals(bs: PSet)) => Equal(as, bs).eval.map(p => :=(p))
     case (_, _) => ???
   }
 

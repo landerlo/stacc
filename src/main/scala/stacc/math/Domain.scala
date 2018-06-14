@@ -6,7 +6,7 @@ import stacc.logic.{Ev, Top}
 
 package object math {
 
- def domain(p: Prop): Ev[Ref \/ PSet] = p match {
+ def domain(p: Prop[Ref \/ PSet]): Ev[Ref \/ PSet] = p match {
   case Equals(dom) => Top(dom)
   case CondEquals(cases) => ???
   case MemberOf(\/-(SET)) => Top(\/-(A_SET))

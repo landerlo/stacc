@@ -1,17 +1,17 @@
 package stacc.logic
 
 import stacc.ast.{LogicPred, Prop, PropOnVar}
-import scalaz.Monad
+import scalaz.{Functor, Monad}
 
 trait Lie
-case class LyingPropOnVar(lie: PropOnVar) extends Lie
-case class LyingProp(lie: Prop) extends Lie
+case class LyingPropOnVar[L](lie: PropOnVar[L]) extends Lie
+case class LyingProp[L](lie: Prop[L]) extends Lie
 case class LyingLogicPred(lie: LogicPred) extends Lie
 case object SETCanBeUnioned extends Lie
 
 object Lie {
-  def apply(p: Prop): Lie = LyingProp(p)
-  def apply(pov: PropOnVar): Lie = LyingPropOnVar(pov)
+  def apply[L](p: Prop[L]): Lie = LyingProp(p)
+  def apply[L](pov: PropOnVar[L]): Lie = LyingPropOnVar(pov)
   def apply(pred: LogicPred): Lie = LyingLogicPred(pred)
 }
 

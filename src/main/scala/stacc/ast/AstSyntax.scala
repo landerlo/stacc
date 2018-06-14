@@ -4,14 +4,14 @@ import stacc.ast._
 
 object AstSyntax {
 
-  def :=(ps: PSet):  Equals = Equals(\/-(ps))
-  def :=(s: Symbol): Equals = Equals(-\/(Ref(Path(s.name))))
-  def :=(ref: Ref):  Equals = Equals(-\/(ref))
+  def :=(ps: PSet):  Equals[PSet] = Equals(ps)
+  def :=(s: Symbol): Equals[Ref \/ PSet] = Equals(-\/(Ref(Path(s.name))))
+  def :=(ref: Ref):  Equals[Ref] = Equals(ref)
 
-  def ee(ps: PSet):  MemberOf = MemberOf(\/-(ps))
-  def ee(s: Symbol): MemberOf = MemberOf(-\/(Ref(Path(s.name))))
-  def ee(ref: Ref):  MemberOf = MemberOf(-\/(ref))
-  def ee(psOrRef: Ref \/ PSet):  MemberOf = MemberOf(psOrRef)
+  def ee(ps: PSet):  MemberOf[PSet] = MemberOf(ps)
+  def ee(s: Symbol): MemberOf[Ref] = MemberOf(Ref(Path(s.name)))
+  def ee(ref: Ref):  MemberOf[Ref] = MemberOf(ref)
+  def ee(psOrRef: Ref \/ PSet):  MemberOf[Ref \/ PSet] = MemberOf(psOrRef)
 
   implicit def idToVar(id: Symbol): Var = Var(id.name)
   implicit def idToRef(id: Symbol): Ref = Ref(Path(id.name))

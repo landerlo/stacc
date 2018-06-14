@@ -16,16 +16,16 @@ case object A_SET extends PSet
 case class Union(a: Ref \/ PSet, b: Ref \/ PSet) extends PSet
 
 object PSet {
-  def apply(vs: Set[PropOnVar]): PSet = ConcPSet(vs)
-  def apply(vs: PropOnVar*): PSet = PSet(vs.toSet)
+  def apply(vs: Set[PropOnVar[Ref \/ PSet]]): PSet = ConcPSet(vs)
+  def apply(vs: PropOnVar[Ref \/ PSet]*): PSet = PSet(vs.toSet)
 
-  case class ConcPSet(vs: Set[PropOnVar]) extends PSet
+  case class ConcPSet(vs: Set[PropOnVar[Ref \/ PSet]]) extends PSet
 
-  val empty = ConcPSet(Set[PropOnVar]())
+  val empty = ConcPSet(Set[PropOnVar[Ref \/ PSet]]())
   val Ø = empty
 }
 
-case class PropOnVar(v: Var, p: Prop)
+case class PropOnVar[T](v: Var, p: Prop[T])
 
 object PropOnVar {
 }

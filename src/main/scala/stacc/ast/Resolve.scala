@@ -12,7 +12,7 @@ import scalaz._
 import scalaz.syntax.monad._
 
 object Resolve {
-  import Prop.traverseProp
+//  import Prop.traverseProp
 
   import Ev.EvMonad
   def resolve(root: PSet)(p: Ref \/ PSet): Ev[Prop[PSet]] = p match {
@@ -26,14 +26,17 @@ object Resolve {
       path.split match {
         case (nextName, Some(restPath)) =>
           val projected: Ev[NEL[Prop[Disjunction[Ref, PSet]]]] = project(Var(nextName))(pset)
-          val nextTarget: Ev[Prop[PSet]] = projected.flatMap(unify(resolve(root)) _)
+          val resolved: Ev[NEL[Prop[PSet]]] = ???
+
+          val nextTarget: Ev[Prop[PSet]] = resolved.flatMap(unify(resolve(root)) _)
 
             val nn: Ev[Ref \/ PSet] = nextTarget.flatMap(domain)
           val rr = nn.flatMap(resolvePath(restPath)(root))
           rr
         case (lastName, None) =>
           val projected = project(Var(lastName))(pset)
-          val nextTarget: Ev[Ref \/ PSet] = projected.flatMap(unify(resolve(root))).flatMap(domain)
+          val resolved: Ev[NEL[Prop[PSet]]] = ???
+          val nextTarget: Ev[Ref \/ PSet] = resolved.flatMap(unify(resolve(root))).flatMap(domain)
 
           nextTarget.flatMap {
             case \/-(p: PSet) => Top(Equals(p))

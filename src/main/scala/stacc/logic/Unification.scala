@@ -5,37 +5,29 @@ import stacc.ast._
 import stacc.ast.AstSyntax._
 import scalaz.Semigroup._
 import scalaz.syntax.semigroup._
+import scalaz.syntax.functor._
 import scalaz.syntax.monad._
 import stacc.ast.PSet.ConcPSet
 import stacc.logic.Ev._
 import stacc.math.domain
+import scalaz.{Equal => ZEqual, _}
 
 object Unification {
+
+  implicit val fprop: Functor[Prop] = implicitly[Functor[Prop]]
   import Prop.propMonad
-  import Ev.EvMonad
+  import scalaz.syntax.monad._
+  def unify(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(ps: NEL[Prop[PSet]]): Ev[Prop[PSet]] = {
 
-  implicit val fprop = implicitly[Monad[Prop]]
-  def unify(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(ps: NEL[Prop[Ref \/ PSet]]): Ev[Prop[PSet]] = {
-    val z: Ev[Ref \/ PSet] = for {
-      resolved: Prop[PSet] <- resolve(ps.head)
-      dom <- domain(resolved)
-    } yield dom
-
-    ps.tail.foldLeft[Ev[Prop[PSet]]](z) {
-      case (ev, b) =>
-        for {
-          domB <- domain(b)
-          rb <- resolve(domB)
-          rev <- ev
-          unified <- unifyProps(resolve)(rev, rb)
-        } yield unified
+    ps.tail.foldLeft[Ev[Prop[PSet]]](Top(ps.head)) {
+      case (ev, b) => ev.flatMap(a => unifyProps(resolve)(a, b))
     }
   }
 
   def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(a: Prop[PSet], b: Prop[PSet]): Ev[Prop[PSet]] = (a, b) match {
     case (MemberOf(as: ConcPSet), MemberOf(bs: ConcPSet)) => Congruent(as, bs).eval(resolve).map(p => MemberOf(p))
     case (Equals(as: PSet), Equals(bs: PSet)) => Equal(as, bs).eval.map(p => Equals(p))
-    case (_, _) => ???
+    case (a, b) => println(s"$a $b"); ???
   }
 
 

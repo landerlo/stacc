@@ -27,14 +27,14 @@ class NamingSpec extends FreeSpec {
       val B = 'B := Ref(Path("A.a"))
 
 
-      assert { resolve(PSet(A, B))(-\/(Ref("A.a"))) === Top(:=(empty)) }
+      assert { resolve(PSet(A, B))(Ref("A.a")) === Top(empty) }
 
     }
     "Successful reference out of order" in {
       val B = 'B := Ref(Path("A.a"))
       val A = 'A := PSet('a := empty)
 
-      assert { resolve(PSet(B, A))(-\/(Ref("B"))) === Top(:=(empty)) }
+      assert { resolve(PSet(B, A))(Ref("B")) === Top(empty) }
     }
 
     "Chained references" in {
@@ -43,7 +43,7 @@ class NamingSpec extends FreeSpec {
       val B = 'B := Ref(Path("A"))
       val C = 'C := empty
 
-      assert { resolve(PSet(A, B, C))(-\/(Ref("B.a"))) === Top(:=(empty)) }
+      assert { resolve(PSet(A, B, C))(Ref("B.a")) === Top(empty) }
 
     }
 
@@ -52,7 +52,7 @@ class NamingSpec extends FreeSpec {
       val B = Ref(Path("A.a"))
       val C = empty
 
-      assert { resolve(PSet('A := A, 'B := B, 'C := C))(-\/(Ref("A.b"))) === Bottom[Ref \/ PSet](Lie('b ee A)) }
+      assert { resolve(PSet('A := A, 'B := B, 'C := C))(Ref("A.b")) === Bottom[PSet](Lie('b ee A)) }
     }
 
    "Incongruent, incompatible variables" in {
@@ -66,7 +66,7 @@ class NamingSpec extends FreeSpec {
           'E := E2
         )
       )
-     assert { resolve(EsNotConguent)(-\/(Ref("a.E.x"))) === Bottom(Lie(Equal(E1, E2))) }
+     assert { resolve(EsNotConguent)(Ref("a.E.x")) === Bottom(Lie(Equal(E1, E2))) }
     }
    }
 
@@ -75,11 +75,11 @@ class NamingSpec extends FreeSpec {
     val Z = PSet('a := 'Z)
 
     "GetVar duplicates are removed" in assert {
-       project('a)(PSet('a := empty, 'b := empty, 'a := empty)) === Top(NEL(:=(empty)))
+       project('a)(PSet('a := empty, 'b := empty, 'a := empty)) === Top(NEL(empty))
      }
 
     "GetVar multiple props" in assert {
-      project('a)(PSet('a := empty, 'b := empty, 'a := Z)) === Top(NEL(:=(empty), :=(Z)))
+      project('a)(PSet('a := empty, 'b := empty, 'a := Z)) === Top(NEL(empty, Z))
      }
   }
 }

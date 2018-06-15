@@ -16,14 +16,14 @@ class UnificationSpec extends FreeSpec {
 
   "Orthogonal set membership" - {
     "membership of orthogonal sets results in membership of the union" in assert {
-      unify(mockResolve)(NEL.nels(MemberOf(A), MemberOf(B))) === Top(ee(PSet('a := empty, 'b := empty)))
+      unify(mockResolve)(NEL.nels(AMember(A), AMember(B))) === Top(ee(PSet('a := empty, 'b := empty)))
     }
 
   }
   "Unification of incongruent variable" in {
     val e1X = PSet('k := empty)
     val e2X = empty
-    assert { unify(mockResolve)(NEL.nels(MemberOf(PSet('x := e1X)), MemberOf(PSet('x := e2X)))) === Bottom(Lie(Equal(e1X, e2X))) }
+    assert { unify(mockResolve)(NEL.nels(AMember(PSet('x := e1X)), AMember(PSet('x := e2X)))) === Bottom(Lie(Equal(e1X, e2X))) }
   }
 
   "Unification with nested incongruency" in {
@@ -35,7 +35,7 @@ class UnificationSpec extends FreeSpec {
       )
     }
     val lie = Bottom(Lie(Equal(empty, PSet('z := empty))))
-    assert { resolvePath(Path("b.x"))(incongruent)(\/-(incongruent)) === lie }
+    assert { resolvePath(Path("b.x"))(incongruent)(incongruent) === lie }
   }
 
 }

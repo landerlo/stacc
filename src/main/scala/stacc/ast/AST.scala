@@ -5,27 +5,35 @@ import Scalaz._
 import scala.collection.Set
 case class Id(s: String)
 
-case class Ref(path: Path)
+sealed trait Rank
+case object RankOne extends Rank
+
+
+sealed trait PSet
+case class ConcPSet(vs: Set[PropOnVar[PSet]]) extends PSet
+case class AMember(of: PSet) extends PSet
+
+object AMember {
+  val A_SET = AMember(SET)
+}
+case object SET extends PSet
+
+case class Union(a: PSet, b: PSet) extends PSet
+case class Ref(path: Path) extends PSet
+
+object PSet {
+  def apply(vs: Set[PropOnVar[PSet]]): PSet = ConcPSet(vs)
+  def apply(vs: PropOnVar[PSet]*): PSet = PSet(vs.toSet)
+
+  val empty = ConcPSet(Set[PropOnVar[PSet]]())
+  val Ø = empty
+}
+
 object Ref {
   def apply(path: String): Ref = Ref(Path(path))
 }
 
-sealed trait PSet
-case object SET extends PSet
-case object A_SET extends PSet
-case class Union(a: Ref \/ PSet, b: Ref \/ PSet) extends PSet
-
-object PSet {
-  def apply(vs: Set[PropOnVar[Ref \/ PSet]]): PSet = ConcPSet(vs)
-  def apply(vs: PropOnVar[Ref \/ PSet]*): PSet = PSet(vs.toSet)
-
-  case class ConcPSet(vs: Set[PropOnVar[Ref \/ PSet]]) extends PSet
-
-  val empty = ConcPSet(Set[PropOnVar[Ref \/ PSet]]())
-  val Ø = empty
-}
-
-case class PropOnVar[T](v: Var, p: Prop[T])
+case class PropOnVar[T](v: Var, p: T)
 
 object PropOnVar {
 }

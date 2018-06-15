@@ -4,55 +4,13 @@ import stacc.util.NELExtension.distinct
 import scalaz.{IList, INil, Order, \/, NonEmptyList => NEL}
 import stacc.logic._
 import stacc.logic.Ev._
-import Prop.propMonad
 
 
-import scalaz._
+import scalaz._, Scalaz._
 import stacc.ast.CondEquals.Case
-import stacc.ast.PSet.ConcPSet
 import std.list._
 //import syntax.traverse._
-import syntax.monad._
 
-import Prop._
-
-sealed trait Prop[T]
-case class Equals[T](target: T)  extends Prop[T]
-case class CondEquals[T](cases: Seq[Case[T]])  extends Prop[T]
-case class MemberOf[T](target: T) extends Prop[T]
-
-object Prop {
-  implicit val propMonad: Monad[Prop] = new Monad[Prop] {
-    override def bind[A, B](fa: Prop[A])(f: A => Prop[B]): Prop[B] = fa match {
-      case Equals(a) => f(a) match {
-        case Equals(b) => Equals(b)
-        case CondEquals(cases) => ???
-        case MemberOf(setB) => MemberOf(setB)
-      }
-      case CondEquals(setA) => ???
-      case MemberOf(setA) => f(setA) match {
-        case Equals(setB) => MemberOf(setB)
-        case CondEquals(cases) => ???
-        case MemberOf(setB) => MemberOf(setB)
-      }
-    }
-
-    override def point[A](a: => A): Prop[A] = Equals(a)
-  }
-
-//  implicit val traverseProp: Traverse[Prop] = new Traverse[Prop] {
-//    override def traverseImpl[G[_], A, B](fa: Prop[A])(f: A => G[B])(implicit evidence$1: Applicative[G]): G[Prop[B]] = fa match {
-//      case Equals(a) =>
-//        val outerA: G[B] = f(a)
-//        evidence$1.map(outerA)(Equals(_))
-//      case MemberOf(a) =>
-//        val outerA: G[B] = f(a)
-//        evidence$1.map(outerA)(MemberOf(_))
-//      case CondEquals(cases) => ???
-//
-//    }
-//  }
-}
 object CondEquals {
   case class Case[T](cond: PSet, target: T)
 }
@@ -65,24 +23,25 @@ object CondEquals {
  */
 sealed trait LogicPred
 case class Congruent(a: ConcPSet, b: ConcPSet) extends LogicPred {
-  def eval(resolve: Ref \/ PSet => Ev[Prop[PSet]]): Ev[PSet] = {
+  def eval(resolve: PSet => Ev[PSet]): Ev[PSet] = {
     val intersection = a.vs.map(_.v).intersect(b.vs.map(_.v))
 
-    val congruentShared: Ev[IList[PropOnVar[Ref \/ PSet]]] = IList.fromList(intersection.toList).map { commonV =>
+    val congruentShared: IList[Ev[PropOnVar[PSet]]] = IList.fromList(intersection.toList).map { commonV =>
       //TODO: remove horrible gets and improve finding of properties
-         val pa = a.vs.find(_.v == commonV).get.p.map(resolve)
-         val pb = b.vs.find(_.v == commonV).get.p.map(resolve)
-      val un =   for {
-           ra <- pa.map(resolve)
-           rb <- pa.map(resolve)
+         val pa: Ev[PSet] = resolve(a.vs.find(_.v == commonV).get.p)
+         val pb: Ev[PSet] = resolve(b.vs.find(_.v == commonV).get.p)
+      val un: Ev[PropOnVar[PSet]] =   for {
+           ra <- pa
+           rb <- pb
            puni <- Unification.unifyProps(resolve)(ra, rb)
         } yield PropOnVar[PSet](commonV, puni)
       println(un)
+      un
     }
 
+    val cong: Ev[IList[PropOnVar[PSet]]] = congruentShared.sequence
     val notInIntersection = (pset: ConcPSet) => pset.vs.filter(pov => !intersection.contains(pov.v))
-
-    congruentShared.map(cong => PSet(cong.toList.toSet ++ notInIntersection(a) ++ notInIntersection(b)))
+    cong.map(c => PSet(c.toList.toSet ++ notInIntersection(a) ++ notInIntersection(b)))
   }
 }
 

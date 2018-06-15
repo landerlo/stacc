@@ -4,14 +4,9 @@ import stacc.ast._
 
 object AstSyntax {
 
-  def :=(ps: PSet):  Equals[Ref \/ PSet] = Equals(\/-(ps))
-  def :=(s: Symbol): Equals[Ref \/ PSet] = Equals(-\/(Ref(Path(s.name))))
-  def :=(ref: Ref):  Equals[Ref \/ PSet] = Equals(-\/(ref))
-
-  def ee(ps: PSet):  MemberOf[Ref \/ PSet] = MemberOf(\/-(ps))
-  def ee(s: Symbol): MemberOf[Ref \/ PSet] = MemberOf(-\/(Ref(Path(s.name))))
-  def ee(ref: Ref):  MemberOf[Ref \/ PSet] = MemberOf(-\/(ref))
-  def ee(psOrRef: Ref \/ PSet):  MemberOf[Ref \/ PSet] = MemberOf(psOrRef)
+  def ee(ps: PSet)  = AMember(ps)
+  def ee(s: Symbol) = AMember(Ref(Path(s.name)))
+  def ee(ref: Ref)  = AMember(ref)
 
   implicit def idToVar(id: Symbol): Var = Var(id.name)
   implicit def idToRef(id: Symbol): Ref = Ref(Path(id.name))
@@ -21,37 +16,35 @@ object AstSyntax {
   }
 
   implicit def symbolOpValueSyntax(s: Symbol): OpsOnValue = new OpsOnValue {
-    override val lhs: Ref \/ PSet = -\/(Ref(s.name))
+    override val lhs: PSet = Ref(s.name)
   }
   implicit def symbolOpVarSyntax(s: Symbol): OpsOnVar = new OpsOnVar {
     override val v: Var = Var(s.name)
   }
 
   implicit def psetOpValueSyntax(pset: PSet): OpsOnValue = new OpsOnValue {
-    override val lhs: Ref \/ PSet = \/-(pset)
+    override val lhs: PSet = pset
   }
 
   trait OpsOnVar {
     val v: Var
 
-    def :=(b: Symbol) = PropOnVar[Ref \/ PSet](Var(v.name), Equals(-\/(Ref(Path(b.name)))))
-    def :=(b: PSet)  =  PropOnVar[Ref \/ PSet](Var(v.name),  Equals(\/-(b)))
-    def :=(b: Ref)  =   PropOnVar[Ref \/ PSet](Var(v.name),  Equals(-\/(b)))
+    def :=(b: Symbol) = PropOnVar[PSet](Var(v.name),  Ref(Path(b.name)))
+    def :=(b: PSet)   =  PropOnVar[PSet](Var(v.name),  b)
+    def :=(b: Ref)    =   PropOnVar[PSet](Var(v.name),  b)
 
-    def ee(s: Symbol) = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(-\/(Ref(Path(s.name)))))
-    def ee(ps: PSet)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(\/-(ps)))
-    def ee(ref: Ref)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(-\/(ref)))
-    def ee(s: Ref \/ PSet)  = PropOnVar[Ref \/ PSet](Var(v.name),  MemberOf(s))
+    def ee(s: Symbol) = PropOnVar[PSet](Var(v.name),  AMember(Ref(Path(s.name))))
+    def ee(ps: PSet)  = PropOnVar[PSet](Var(v.name),  AMember(ps))
+    def ee(ref: Ref)  = PropOnVar[PSet](Var(v.name),  AMember(ref))
 
    }
 
   trait OpsOnValue {
-    val lhs: Ref \/ PSet
+    val lhs: PSet
 
-    def u(s: Symbol) = Union(lhs,  -\/(Ref(Path(s.name))))
-    def u(ps: PSet)  = Union(lhs,  \/-(ps))
-    def u(ref: Ref)  = Union(lhs,  -\/(ref))
-    def u(rhs: Ref \/ PSet)  = Union(lhs, rhs)
+    def u(s: Symbol) = Union(lhs,  Ref(Path(s.name)))
+    def u(ps: PSet)  = Union(lhs,  ps)
+    def u(ref: Ref)  = Union(lhs,  ref)
   }
 
   implicit class ElemOps(e: PSet) {

@@ -7,27 +7,30 @@ import scalaz.Semigroup._
 import scalaz.syntax.semigroup._
 import scalaz.syntax.functor._
 import scalaz.syntax.monad._
-import stacc.ast.PSet.ConcPSet
 import stacc.logic.Ev._
 import stacc.math.domain
 import scalaz.{Equal => ZEqual, _}
 
 object Unification {
 
-  implicit val fprop: Functor[Prop] = implicitly[Functor[Prop]]
-  import Prop.propMonad
   import scalaz.syntax.monad._
-  def unify(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(ps: NEL[Prop[PSet]]): Ev[Prop[PSet]] = {
+  def unify(resolve: (PSet) => Ev[PSet])(ps: NEL[PSet]): Ev[PSet] = {
 
-    ps.tail.foldLeft[Ev[Prop[PSet]]](Top(ps.head)) {
+    ps.tail.foldLeft[Ev[PSet]](Top(ps.head)) {
       case (ev, b) => ev.flatMap(a => unifyProps(resolve)(a, b))
     }
   }
 
-  def unifyProps(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(a: Prop[PSet], b: Prop[PSet]): Ev[Prop[PSet]] = (a, b) match {
-    case (MemberOf(as: ConcPSet), MemberOf(bs: ConcPSet)) => Congruent(as, bs).eval(resolve).map(p => MemberOf(p))
-    case (Equals(as: PSet), Equals(bs: PSet)) => Equal(as, bs).eval.map(p => Equals(p))
-    case (a, b) => println(s"$a $b"); ???
+  def unifyProps(resolve: PSet => Ev[PSet])(a: PSet, b: PSet): Ev[PSet] = {
+    println(s"Unifying $a $b")
+    (a, b) match {
+      case (AMember(ofA: ConcPSet), AMember(ofB: ConcPSet)) =>
+        Congruent(ofA, ofB).eval(resolve).map(p => AMember(p))
+      case (as: ConcPSet, bs: ConcPSet) =>
+        Equal(as, bs).eval
+      case (a, b) =>
+        println(s"$a $b"); ???
+    }
   }
 
 

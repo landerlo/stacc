@@ -1,6 +1,6 @@
 package stacc.logic
 
-import scalaz.{INil, Semigroup, \/, \/-, NonEmptyList => NEL}
+import scalaz.{Functor, INil, Monad, Semigroup, \/, \/-, NonEmptyList => NEL}
 import stacc.ast._
 import stacc.ast.AstSyntax._
 import scalaz.Semigroup._
@@ -11,9 +11,17 @@ import stacc.logic.Ev._
 import stacc.math.domain
 
 object Unification {
+  import Prop.propMonad
+  import Ev.EvMonad
 
+  implicit val fprop = implicitly[Monad[Prop]]
   def unify(resolve: (Ref \/ PSet) => Ev[Prop[PSet]])(ps: NEL[Prop[Ref \/ PSet]]): Ev[Prop[PSet]] = {
-    ps.tail.foldLeft[Ev[Prop[PSet]]](domain(ps.head).flatMap(resolve)) {
+    val z: Ev[Ref \/ PSet] = for {
+      resolved: Prop[PSet] <- resolve(ps.head)
+      dom <- domain(resolved)
+    } yield dom
+
+    ps.tail.foldLeft[Ev[Prop[PSet]]](z) {
       case (ev, b) =>
         for {
           domB <- domain(b)

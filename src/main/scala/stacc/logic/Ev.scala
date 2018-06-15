@@ -20,6 +20,7 @@ case class Top[A](a: A) extends Ev[A]
 case class Bottom[A](lie: Lie) extends Ev[A]
 
 object Ev {
+  def top[A](a: A): Ev[A] = Top[A](a)
 
   implicit val EvMonad: Monad[Ev] = new Monad[Ev] {
     override def bind[A, B](fa: Ev[A])(f: A => Ev[B]): Ev[B] = fa match {

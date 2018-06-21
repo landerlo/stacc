@@ -45,6 +45,8 @@ object AstSyntax {
     def u(s: Symbol) = Union(lhs,  Ref(Path(s.name)))
     def u(ps: PSet)  = Union(lhs,  ps)
     def u(ref: Ref)  = Union(lhs,  ref)
+
+    def :|:(o: PSet) = '| u PSet('a := lhs, 'b := o)
   }
 
   implicit class ElemOps(e: PSet) {

@@ -22,6 +22,7 @@ object CondEquals {
   expected in the grammar.
  */
 sealed trait LogicPred
+//TODO: Congruency should be about PropOnVar and PropOnVar? and congruent(NEL(POV)) which just bruteforce all pairs
 case class Congruent(a: ConcPSet, b: ConcPSet) extends LogicPred {
   def eval(resolve: PSet => Ev[PSet]): Ev[PSet] = {
     val intersection = a.vs.map(_.v).intersect(b.vs.map(_.v))
